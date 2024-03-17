@@ -38,8 +38,8 @@ export default function Index() {
           <Image
             src='/Analysis-img.svg'
             alt='home page'
-            width={200}
-            height={200}
+            width={400}
+            height={400}
           ></Image>
           <div className='w-full flex flex-col gap-y-8 justify-between'>
             <Button
