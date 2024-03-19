@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dashboard - Stock Analyzer',
+  title: 'Setting - Stock Analyzer',
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {

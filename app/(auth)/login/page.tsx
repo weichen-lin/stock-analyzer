@@ -15,7 +15,7 @@ export default function Index() {
       provider: 'google',
       options: {
         redirectTo: 'http://localhost:3000/auth/callback',
-        queryParams: { next: '/dashboard' }
+        queryParams: { next: '/lists' }
       }
     })
   }
