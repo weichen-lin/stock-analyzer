@@ -5,8 +5,12 @@ import { cookies } from 'next/headers'
 import Sidebar from '@/components/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
 import dynamic from 'next/dynamic'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { CurrencyInput } from '@/components/input'
+import { Title } from '@/components/setting'
 
-const Setting = dynamic(() => import('@/components/lists/setting'), { ssr: false })
+const Form = dynamic(() => import('@/components/form/root'), { ssr: false })
 
 export default async function RequiredSession() {
   const supabase = createServerComponentClient({ cookies })
@@ -16,22 +20,10 @@ export default async function RequiredSession() {
   } = await supabase.auth.getSession()
 
   return (
-    <div className='w-full flex-1 mt-[56px] h-full'>
+    <div className='w-full mt-[56px] h-[100%-56px]'>
       <Sidebar />
-      <div className='px-4 flex flex-col gap-y-4'>
-        <p className='font-bold py-8 text-2xl'>Financial Planning</p>
-        {/* <div className='flex flex-col space-y-6'>
-          <div className='space-y-2'>
-            <Skeleton className='h-4 w-full' />
-            <Skeleton className='h-4 w-full' />
-          </div>
-          <div className='space-y-2'>
-            <Skeleton className='h-4 w-full' />
-            <Skeleton className='h-4 w-full' />
-          </div>
-        </div> */}
-        <Setting />
-      </div>
+      <Title title='Current Setting' />
+      <Form />
     </div>
   )
 }

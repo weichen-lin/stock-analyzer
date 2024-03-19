@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className='w-full flex flex-col'>{children}</div>
+  return <div className='w-full h-screen flex flex-col bg-slate-100/30'>{children}</div>
 }
