@@ -30,6 +30,10 @@ export default function NumberInput(props: {
     <Input
       value={value}
       onBlur={onBlur}
+      onFocus={(e) => {
+        e.target.select()
+      }}
+      onContextMenu={(e) => e.preventDefault()}
       onChange={(e) => {
         setValue(e.target.value)
       }}

@@ -12,7 +12,7 @@ export default async function RequiredSession() {
   const supabase = createServerComponentClient({ cookies })
 
   const {
-    data: { session },
+    data: { session }
   } = await supabase.auth.getSession()
 
   return (

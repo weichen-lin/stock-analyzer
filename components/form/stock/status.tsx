@@ -6,12 +6,16 @@ import { Input } from '@/components/ui/input'
 import currency from 'currency.js'
 import { NumberInput } from '@/components/input'
 import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 function StockStatus({ index }: { index: number }) {
   const { values, setFieldValue } = useFormikContext<ISetting>()
   const [position, setPosition] = useState('0.00')
+  const [error, setError] = useState(false)
   const stock = values.stocks[index]
-  const max = values.stocks.map((e) => e.targetPosition).reduce((a, b) => currency(a).add(b).value, 0)
+  const max = values.stocks
+    .map((e) => e.targetPosition)
+    .reduce((a, b) => currency(a).add(b).value, 0)
 
   const getAverageCost = () => {
     return currency(stock.averageCost).value
@@ -35,7 +39,9 @@ function StockStatus({ index }: { index: number }) {
   }
 
   useEffect(() => {
-    setPosition(getCurrentPosition())
+    const current = getCurrentPosition()
+    setPosition(currency(current).value > 100 ? '--' : current)
+    setError(currency(current).value > 100)
   }, [stock.shares, stock.averageCost, values.cash])
 
   return (
@@ -50,7 +56,11 @@ function StockStatus({ index }: { index: number }) {
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>當前倉位 (%)</div>
-        <Input disabled value={position} />
+        <Input
+          disabled
+          value={position}
+          className={cn(error && 'border-red-300')}
+        />
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>目標倉位 (%)</div>
@@ -66,19 +76,32 @@ function StockStatus({ index }: { index: number }) {
   )
 }
 
-const PercentageChange = ({ averageCost, price }: { averageCost: number; price: string }) => {
+const PercentageChange = ({
+  averageCost,
+  price
+}: {
+  averageCost: number
+  price: string
+}) => {
   if (averageCost === 0) {
     return <div className='px-3 py-2'>--</div>
   }
 
-  const percent = currency(price).subtract(averageCost).divide(averageCost).multiply(100).value
+  const percent = currency(price)
+    .subtract(averageCost)
+    .divide(averageCost)
+    .multiply(100).value
 
   if (percent > 0) {
-    return <div className='px-3 py-2 text-green-500 font-semibold'>{percent}%</div>
+    return (
+      <div className='px-3 py-2 text-green-500 font-semibold'>{percent}%</div>
+    )
   }
 
   if (percent < 0) {
-    return <div className='px-3 py-2 text-red-500 font-semibold'>{percent}%</div>
+    return (
+      <div className='px-3 py-2 text-red-500 font-semibold'>{percent}%</div>
+    )
   }
 
   return <div className='px-3 py-2 font-semibold'>{percent}%</div>
