@@ -14,7 +14,7 @@ function StockInfo({ index }: { index: number }) {
   return (
     <div className='flex gap-x-2 w-full'>
       <Image
-        src={stock.image}
+        src={stock.image === '' ? '/loader.svg' : stock.image}
         width={70}
         height={70}
         alt='test'

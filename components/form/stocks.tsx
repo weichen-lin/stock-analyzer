@@ -1,12 +1,8 @@
 'use client'
 
-import { SearchSelect } from '@/components/select'
-import { NumberInput } from '@/components/input'
-import { Input } from '@/components/ui/input'
 import { useFormikContext, ArrayHelpers } from 'formik'
 import { ISetting } from '@/components/form/stock/type'
 import { Button } from '@/components/ui/button'
-import currency from 'currency.js'
 import { StockSelect, StockInfo, StockCost, StockStatus } from '@/components/form/stock'
 
 function Stock({ index }: { index: number }) {
@@ -37,13 +33,16 @@ const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers
       ))}
       <Button
         variant='outline'
+        className='ml-3 w-[120px]'
         onClick={() => {
           push({
             symbol: '',
             name: '',
-            currency: '',
-            stockExchange: '',
-            exchangeShortName: '',
+            targetPosition: '0.00',
+            image: '',
+            price: '0.00',
+            shares: '0',
+            averageCost: '0.00',
           })
         }}
       >

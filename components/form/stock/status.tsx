@@ -1,18 +1,17 @@
 'use client'
 
-import { SearchSelect } from '@/components/select'
 import { useFormikContext } from 'formik'
-import { getStockProfile } from '@/finance/query'
 import { ISetting } from './type'
-import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import currency from 'currency.js'
-import { WholeNumberInput, CurrencyInput, NumberInput } from '@/components/input'
+import { NumberInput } from '@/components/input'
+import { useEffect, useState } from 'react'
 
 function StockStatus({ index }: { index: number }) {
   const { values, setFieldValue } = useFormikContext<ISetting>()
+  const [position, setPosition] = useState('0.00')
   const stock = values.stocks[index]
-  const max = values.stocks.map((e) => e.currentPosition).reduce((a, b) => currency(a).add(b).value, 0)
+  const max = values.stocks.map((e) => e.targetPosition).reduce((a, b) => currency(a).add(b).value, 0)
 
   const getAverageCost = () => {
     return currency(stock.averageCost).value
@@ -35,6 +34,10 @@ function StockStatus({ index }: { index: number }) {
       .toString()
   }
 
+  useEffect(() => {
+    setPosition(getCurrentPosition())
+  }, [stock.shares, stock.averageCost, values.cash])
+
   return (
     <div className='flex gap-x-2 w-full'>
       <div className='w-1/3 space-y-2'>
@@ -47,12 +50,12 @@ function StockStatus({ index }: { index: number }) {
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>當前倉位 (%)</div>
-        <Input disabled value={getCurrentPosition()} />
+        <Input disabled value={position} />
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>目標倉位 (%)</div>
         <NumberInput
-          number={stock.currentPosition}
+          number={stock.targetPosition}
           onChange={(e) => {
             setFieldValue(`stocks[${index}].currentPosition`, e)
           }}
@@ -63,7 +66,7 @@ function StockStatus({ index }: { index: number }) {
   )
 }
 
-const PercentageChange = ({ averageCost, price }: { averageCost: number; price: number }) => {
+const PercentageChange = ({ averageCost, price }: { averageCost: number; price: string }) => {
   if (averageCost === 0) {
     return <div className='px-3 py-2'>--</div>
   }
