@@ -9,12 +9,18 @@ const fetcher = axios.create({
   },
 })
 
-interface IStock {
+export interface IStock {
   symbol: string
   name: string
   currency: string
   stockExchange: string
   exchangeShortName: string
+}
+
+export interface IStockProfile {
+  symbol: string
+  price: number
+  image: string
 }
 
 export const queryStocks = async (query: string) => {
@@ -27,8 +33,16 @@ export const queryStocks = async (query: string) => {
     })
 
     return data
-  } catch (error) {
-    console.error(error)
+  } catch {
     return []
+  }
+}
+
+export const getStockProfile = async (symbol: string) => {
+  try {
+    const { data } = await fetcher.get<IStockProfile[]>(`/api/v3/profile/${symbol}`)
+    return Array.isArray(data) ? data[0] : null
+  } catch {
+    return null
   }
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import currency from 'currency.js'
 
 export default function CurrencyInput(props: { cashValue: string; onChange: (e: string) => void }) {
@@ -13,6 +13,10 @@ export default function CurrencyInput(props: { cashValue: string; onChange: (e: 
     setValue(e)
     onChange(e)
   }
+
+  useEffect(() => {
+    setValue(cashValue)
+  }, [cashValue])
 
   return (
     <Input

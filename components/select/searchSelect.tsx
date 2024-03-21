@@ -5,18 +5,18 @@ import { CircleNotch } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
 import { motion } from 'framer-motion'
-import { queryStocks } from '@/finance/query'
+import { queryStocks, IStock } from '@/finance/query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useClickOutside } from '@/hooks/util'
 
 interface SearchSelectProps {
-  defaultOptions?: string[]
-  onSearch: (value: string) => void
+  defaultOptions?: IStock[]
+  onSelect: (e: { symbol: string; name: string }) => void
 }
 
 const SearchSelect = (props: SearchSelectProps) => {
-  const { defaultOptions = [], onSearch } = props
-  const [options, setOptions] = useState<string[]>(defaultOptions)
+  const { defaultOptions = [], onSelect } = props
+  const [options, setOptions] = useState<IStock[]>(defaultOptions)
   const [isSearching, setIsSearching] = useState(true)
   const [focused, setFocused] = useState(false)
   const [value, setValue] = useState('')
@@ -29,7 +29,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       setIsSearching(true)
       const fetchData = async () => {
         const data = await queryStocks(debouncedSearchTerm)
-        setOptions(data.map((e) => e.symbol))
+        setOptions(data)
         setIsSearching(false)
       }
       fetchData()
@@ -44,7 +44,12 @@ const SearchSelect = (props: SearchSelectProps) => {
   })
 
   const handleSelect = (value: string) => {
-    setValue(value)
+    const info = options.find((e) => e.symbol === value)
+    if (info) {
+      setValue(info.symbol)
+      onSelect({ symbol: info.symbol, name: info.name })
+    }
+
     setFocused(false)
   }
 
@@ -74,9 +79,9 @@ const SearchSelect = (props: SearchSelectProps) => {
               <div
                 key={index}
                 className='px-2 py-1 font-semibold bg-slate-100 rounded-md'
-                onClick={() => handleSelect(option)}
+                onClick={() => handleSelect(option.symbol)}
               >
-                {option}
+                {option.symbol}
               </div>
             ))}
           {isSearching && (

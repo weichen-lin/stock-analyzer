@@ -1,21 +1,27 @@
 'use client'
 
-import { Formik, Field, Form, FormikHelpers } from 'formik'
+import { Formik, Field, Form, FormikHelpers, FieldArray, ArrayHelpers } from 'formik'
 import { FC } from 'react'
 import Cash from './cash'
-import Stock from './stock'
+import Stocks from './stocks'
 import { useFormikContext } from 'formik'
-import { ISetting } from './type'
+import { ISetting } from '@/components/form/stock/type'
 
 const initValue = {
   cash: '0.00',
   stocks: [
     {
-      symbol: 'string',
-      name: 'string',
-      currency: 'string',
-      stockExchange: 'string',
-      exchangeShortName: 'string',
+      symbol: '',
+      name: '',
+      currency: '',
+      stockExchange: '',
+      exchangeShortName: '',
+      currentPosition: '0',
+      targetPosition: '0',
+      shares: '0',
+      image: '',
+      price: 0,
+      averageCost: '0.00',
     },
   ],
 }
@@ -33,18 +39,7 @@ const SettingForm: FC = () => {
     >
       <div className='px-2'>
         <Cash />
-        <Field name='stocks'>
-          {({ field }) => {
-            return (
-              <div className='flex flex-col space-y-2'>
-                <div className='pl-2 font-semibold'>股票</div>
-                {field.value.map((_, index) => (
-                  <Stock key={index} />
-                ))}
-              </div>
-            )
-          }}
-        </Field>
+        <FieldArray name='stocks'>{(helper: ArrayHelpers) => <Stocks {...helper} />}</FieldArray>
       </div>
     </Formik>
   )
