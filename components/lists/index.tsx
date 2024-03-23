@@ -1,3 +1,4 @@
 import Setting from './setting'
+import AddSetting from './add'
 
-export { Setting }
+export { Setting, AddSetting }

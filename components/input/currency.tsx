@@ -8,9 +8,10 @@ import { cn } from '@/lib/utils'
 export default function CurrencyInput(props: {
   cashValue: string
   error?: boolean
+  placeholder?: string
   onChange: (e: string) => void
 }) {
-  const { cashValue, onChange, error } = props
+  const { cashValue, onChange, error, placeholder } = props
   const [value, setValue] = useState(cashValue)
   const ref = useRef<HTMLInputElement>(null)
 
@@ -39,6 +40,7 @@ export default function CurrencyInput(props: {
       onFocus={(e) => {
         e.target.select()
       }}
+      placeholder={placeholder}
       onContextMenu={(e) => e.preventDefault()}
       className={cn(error ? 'border-red-300' : '', 'select-none')}
     />

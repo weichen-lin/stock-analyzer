@@ -2,34 +2,42 @@
 
 import { DotsThreeVertical } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import currency from 'currency.js'
+import { ISetting } from '@/finance/setting'
+import Link from 'next/link'
 
-export default function Setting() {
+export default function Setting(props: ISetting) {
+  const { name, settings } = props
   return (
-    <div className='flex flex-col items-center gap-x-2 justify-between hover:bg-slate-100 rounded-md border border-dashed p-2 w-full gap-y-4'>
-      <div className='px-4 w-full truncate'>
-        asdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdasasdas
+    <Link href={`/setting/${props.id}`}>
+      <div className='flex flex-col items-center gap-x-2 justify-between hover:bg-slate-100 rounded-md border border-dashed p-2 w-full gap-y-4'>
+        <div className='px-4 w-full truncate'>{name}</div>
+        <div className='flex gap-x-4 justify-end w-full px-4'>
+          <Currency value={settings.cash} />
+          <DropdownMenu>
+            <DropdownMenuTrigger className='bg-slate-100 rounded-md'>
+              <DotsThreeVertical className='h-6 w-6' />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className='flex gap-x-4 justify-end w-full px-4'>
-        <Currency value={100213123.012} />
-        <DropdownMenu>
-          <DropdownMenuTrigger className='bg-slate-100 rounded-md'>
-            <DotsThreeVertical className='h-6 w-6' />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Team</DropdownMenuItem>
-            <DropdownMenuItem>Subscription</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </div>
+    </Link>
   )
 }
 
-const Currency = ({ value }: { value: number }) => {
+const Currency = ({ value }: { value: string }) => {
   const formatted = currency(value).format({ symbol: '', precision: 2 })
   const [whole, decimal] = formatted.split('.')
 
