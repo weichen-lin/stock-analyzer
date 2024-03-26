@@ -6,11 +6,14 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { updateSetting } from '@/finance/setting'
 import { useParams } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { useUpdate } from '@/hooks/stock'
 
 export default function Total() {
   const { values } = useFormikContext<ISettingData>()
   const [field, meta, helpers] = useField<string>('total')
   const [isUpdate, setIsUpdate] = useState(false)
+  const { startUpdate, updateStocks } = useUpdate()
   const { id } = useParams()
 
   const { value } = meta
@@ -47,7 +50,7 @@ export default function Total() {
         <div className='w-full flex flex-col justify-between gap-y-2'>
           <div className='flex w-full justify-between'>
             <div className='pl-2 font-semibold'>
-              帳戶總價值<span className='text-slate-500 text-sm px-2'>(自行填入)</span>
+              目前帳戶總價值<span className='text-slate-500 text-sm px-2'>(自行填入)</span>
             </div>
             {isUpdate && (
               <div className=''>
@@ -71,10 +74,13 @@ export default function Total() {
         </div>
       </div>
       <div className='flex flex-col p-3 space-y-4 mb-2 w-1/3'>
-        <div className='font-semibold'>股票總佔比</div>
+        {/* <div className='font-semibold'>股票總佔比</div>
         <div className='text-lg w-full font-semibold flex flex-col items-start'>
           {currency(stocksValue, { precision: 4 }).divide(values.total).multiply(100).value}%
-        </div>
+        </div> */}
+        <Button onClick={async () => await updateStocks()} loading={startUpdate} disabled={startUpdate}>
+          更新
+        </Button>
       </div>
     </div>
   )

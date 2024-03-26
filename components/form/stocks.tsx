@@ -1,6 +1,6 @@
 'use client'
 
-import { useFormikContext, ArrayHelpers } from 'formik'
+import { useFormikContext, ArrayHelpers, useField } from 'formik'
 import { ISettingData } from '@/finance/setting'
 import { Button } from '@/components/ui/button'
 import { StockSelect, StockInfo, StockCost, StockStatus, Total } from '@/components/form/stock'
@@ -10,11 +10,13 @@ import { Trash } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { updateStore } from '@/store/stock'
 
 function Stock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
   const { values } = useFormikContext<ISettingData>()
   const stock = values.stocks[index]
+  const { startUpdate } = updateStore()
 
   return (
     <motion.div
@@ -47,6 +49,8 @@ function Stock({ index, remove }: { index: number; remove: (index: number) => vo
             onClick={() => {
               remove(index)
             }}
+            loading={startUpdate}
+            disabled={startUpdate}
           >
             <Trash className='h-5 w-5' />
           </Button>

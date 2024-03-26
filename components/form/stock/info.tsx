@@ -1,14 +1,12 @@
 'use client'
 
-import { SearchSelect } from '@/components/select'
 import { useFormikContext } from 'formik'
-import { getStockProfile } from '@/finance/query'
-import { ISetting } from './type'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
+import { ISettingData } from '@/finance/setting'
 
 function StockInfo({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISetting>()
+  const { values, setFieldValue } = useFormikContext<ISettingData>()
   const stock = values.stocks[index]
 
   return (

@@ -15,8 +15,8 @@ export default function Index() {
       provider: 'google',
       options: {
         redirectTo: 'http://localhost:3000/auth/callback',
-        queryParams: { next: '/lists' }
-      }
+        queryParams: { next: '/lists' },
+      },
     })
   }
 
@@ -35,37 +35,21 @@ export default function Index() {
           </div>
         </header>
         <section className='py-4 container flex flex-col items-center justify-around px-4 md:px-6 w-[380px] flex-1'>
-          <Image
-            src='/Analysis-img.svg'
-            alt='home page'
-            width={400}
-            height={400}
-          ></Image>
+          <Image src='/Analysis-img.svg' alt='home page' width={400} height={400}></Image>
           <div className='w-full flex flex-col gap-y-8 justify-between'>
-            <Button
-              variant='outline'
-              onClick={handleSignUp}
-              className='w-24 mx-auto'
-            >
+            <Button variant='outline' onClick={handleSignUp} className='w-24 mx-auto'>
               <GoogleLogo className='h-6 w-6' />
             </Button>
           </div>
         </section>
         <footer className='w-full mb-4'>
           <div className='container flex flex-col items-center justify-center py-8 text-center md:flex-row md:space-x-2 md:space-y-0 md:py-12 lg:py-16 xl:py-24'>
-            <p className='text-sm text-gray-500 dark:text-gray-400'>
-              © 2024 WeiChen Lin. All rights reserved.
-            </p>
+            <p className='text-sm text-gray-500 dark:text-gray-400'>© 2024 WeiChen Lin. All rights reserved.</p>
           </div>
         </footer>
       </div>
       <div className='hidden h-full flex-1 items-center justify-center lg:flex bg-white'>
-        <Image
-          src='/Analysis.gif'
-          alt='home page'
-          width={700}
-          height={700}
-        ></Image>
+        <Image src='/Analysis.gif' alt='home page' width={700} height={700} unoptimized></Image>
       </div>
     </div>
   )

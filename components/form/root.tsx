@@ -7,6 +7,7 @@ import Stocks from './stocks'
 import { ISettingData } from '@/finance/setting'
 import { Total } from './stock'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { StockPie } from './charts'
 
 const SettingForm: FC<ISettingData> = (props: ISettingData) => {
   return (
@@ -15,16 +16,21 @@ const SettingForm: FC<ISettingData> = (props: ISettingData) => {
       onSubmit={(values: ISettingData, { setSubmitting }: FormikHelpers<ISettingData>) => {}}
     >
       <div className='px-2 w-full'>
-        {/* <Total />
-          <Cash />
-          <FieldArray name='stocks'>{(helper: ArrayHelpers) => <Stocks {...helper} />}</FieldArray> */}
-        <Tabs defaultValue='account' className='w-full'>
+        <Tabs defaultValue='setting' className='w-full'>
           <TabsList className='grid w-full grid-cols-2'>
-            <TabsTrigger value='account'>Account</TabsTrigger>
-            <TabsTrigger value='password'>Password</TabsTrigger>
+            <TabsTrigger value='setting'>倉位設置</TabsTrigger>
+            <TabsTrigger value='graph'>圖表呈現</TabsTrigger>
           </TabsList>
-          <TabsContent value='account'>123</TabsContent>
-          <TabsContent value='password'>123</TabsContent>
+          <TabsContent value='setting'>
+            <Total />
+            <Cash />
+            <FieldArray name='stocks'>{(helper: ArrayHelpers) => <Stocks {...helper} />}</FieldArray>
+          </TabsContent>
+          <TabsContent value='graph'>
+            <div className='flex items-center p-4'>
+              <StockPie />
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </Formik>

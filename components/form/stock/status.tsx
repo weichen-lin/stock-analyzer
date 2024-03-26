@@ -25,22 +25,21 @@ function StockStatus({ index }: { index: number }) {
     if (
       currency(stock.shares).value === 0 ||
       currency(stock.averageCost).value === 0 ||
-      currency(values.cash).value === 0
+      currency(values.total).value === 0
     )
-      return '0'
+      return currency(0)
 
-    return currency(stock.shares)
+    return currency(stock.shares, { precision: 4 })
       .multiply(currency(stock.averageCost).value)
-      .divide(currency(values.cash).value)
+      .divide(currency(values.total))
       .multiply(100)
-      .toString()
   }
 
   useEffect(() => {
     const current = getCurrentPosition()
-    setPosition(currency(current).value > 100 ? '--' : current)
+    setPosition(current.value > 100 ? '--' : current.value.toFixed(2))
     setError(currency(current).value > 100)
-  }, [stock.shares, stock.averageCost, values.cash])
+  }, [stock.shares, stock.averageCost, values.total])
 
   return (
     <div className='flex gap-x-2 w-full'>
