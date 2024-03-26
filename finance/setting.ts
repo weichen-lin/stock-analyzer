@@ -7,7 +7,7 @@ export interface IStockConfig {
   name: string
   targetPosition: string
   image: string
-  price: string
+  price: number
   shares: string
   averageCost: string
 }
@@ -23,18 +23,12 @@ export interface ISetting {
 
 export interface ISettingData {
   cash: string
+  total: string
   stocks: IStockConfig[]
 }
 
-export const createSetting = async (data: {
-  user_email: string
-  name: string
-  cash: string
-}) => {
-  const { data: checker } = await supabase
-    .from('settings')
-    .select('name')
-    .eq('name', data.name)
+export const createSetting = async (data: { user_email: string; name: string; cash: string }) => {
+  const { data: checker } = await supabase.from('settings').select('name').eq('name', data.name)
 
   if (checker && checker.length > 0) {
     throw new Error('名稱重複')
@@ -53,10 +47,10 @@ export const createSetting = async (data: {
           image: '',
           price: '',
           shares: '0',
-          averageCost: '0.00'
-        }
-      ]
-    }
+          averageCost: '0.00',
+        },
+      ],
+    },
   })
 
   if (error) {
@@ -86,19 +80,8 @@ export const getSettings = async (email: string): Promise<ISetting[]> => {
   return data
 }
 
-export const getSetting = async ({
-  email,
-  id
-}: {
-  email: string
-  id: string
-}): Promise<ISetting> => {
-  const { data, error } = await supabase
-    .from('settings')
-    .select('*')
-    .eq('user_email', email)
-    .eq('id', id)
-    .single()
+export const getSetting = async ({ email, id }: { email: string; id: string }): Promise<ISetting> => {
+  const { data, error } = await supabase.from('settings').select('*').eq('user_email', email).eq('id', id).single()
 
   if (error) {
     throw error
@@ -107,14 +90,8 @@ export const getSetting = async ({
   return data
 }
 
-export const updateSetting = async (data: {
-  id: string
-  settings: ISettingData
-}) => {
-  const { error } = await supabase
-    .from('settings')
-    .update({ settings: data.settings })
-    .eq('id', data.id)
+export const updateSetting = async (data: { id: string; settings: ISettingData }) => {
+  const { error } = await supabase.from('settings').update({ settings: data.settings }).eq('id', data.id)
 
   if (error) {
     throw error

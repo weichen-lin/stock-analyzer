@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormikContext } from 'formik'
-import { ISetting } from './type'
+import { ISettingData } from '@/finance/setting'
 import { Input } from '@/components/ui/input'
 import currency from 'currency.js'
 import { NumberInput } from '@/components/input'
@@ -9,16 +9,14 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 function StockStatus({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISetting>()
+  const { values, setFieldValue } = useFormikContext<ISettingData>()
   const [position, setPosition] = useState('0.00')
   const [error, setError] = useState(false)
   const stock = values.stocks[index]
-  const max = values.stocks
-    .map((e) => e.targetPosition)
-    .reduce((a, b) => currency(a).add(b).value, 0)
+  const max = values.stocks.map((e) => e.targetPosition).reduce((a, b) => currency(a).add(b).value, 0)
 
   const getAverageCost = () => {
-    return currency(stock.averageCost).value
+    return currency(stock.averageCost, { precision: 2 }).value
   }
 
   const average = getAverageCost()
@@ -56,11 +54,7 @@ function StockStatus({ index }: { index: number }) {
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>當前倉位 (%)</div>
-        <Input
-          disabled
-          value={position}
-          className={cn(error && 'border-red-300')}
-        />
+        <Input disabled value={position} className={cn(error && 'border-red-300')} />
       </div>
       <div className='w-1/3 space-y-2'>
         <div className='pl-2 font-semibold'>目標倉位 (%)</div>
@@ -76,35 +70,24 @@ function StockStatus({ index }: { index: number }) {
   )
 }
 
-const PercentageChange = ({
-  averageCost,
-  price
-}: {
-  averageCost: number
-  price: string
-}) => {
+const PercentageChange = ({ averageCost, price }: { averageCost: number; price: number }) => {
   if (averageCost === 0) {
     return <div className='px-3 py-2'>--</div>
   }
 
-  const percent = currency(price)
-    .subtract(averageCost)
-    .divide(averageCost)
-    .multiply(100).value
+  const cost = currency(averageCost, { precision: 4 })
 
-  if (percent > 0) {
-    return (
-      <div className='px-3 py-2 text-green-500 font-semibold'>{percent}%</div>
-    )
+  const percent = currency(price, { precision: 4 }).subtract(cost).divide(cost).multiply(100)
+
+  if (percent.value > 0) {
+    return <div className='px-3 py-2 text-green-500 font-semibold'>{percent.value}%</div>
   }
 
-  if (percent < 0) {
-    return (
-      <div className='px-3 py-2 text-red-500 font-semibold'>{percent}%</div>
-    )
+  if (percent.value < 0) {
+    return <div className='px-3 py-2 text-red-500 font-semibold'>{percent.value}%</div>
   }
 
-  return <div className='px-3 py-2 font-semibold'>{percent}%</div>
+  return <div className='px-3 py-2 font-semibold'>{percent.value}%</div>
 }
 
 export default StockStatus

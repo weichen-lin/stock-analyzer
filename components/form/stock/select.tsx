@@ -3,10 +3,10 @@
 import { SearchSelect } from '@/components/select'
 import { useFormikContext } from 'formik'
 import { getStockProfile } from '@/finance/query'
-import { ISetting } from './type'
+import { ISettingData } from '@/finance/setting'
 
 function StockSelect({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISetting>()
+  const { values, setFieldValue } = useFormikContext<ISettingData>()
   const stock = values.stocks[index]
   const isSelect = stock.symbol !== ''
 
@@ -14,13 +14,7 @@ function StockSelect({ index }: { index: number }) {
     <div className='w-2/3 space-y-2'>
       <div className='pl-2 font-semibold'>股票代號</div>
       <SearchSelect
-        onSelect={async ({
-          symbol,
-          name
-        }: {
-          symbol: string
-          name: string
-        }) => {
+        onSelect={async ({ symbol, name }: { symbol: string; name: string }) => {
           setFieldValue(`stocks[${index}].symbol`, symbol)
           setFieldValue(`stocks[${index}].name`, name)
 
@@ -31,6 +25,7 @@ function StockSelect({ index }: { index: number }) {
           }
         }}
         disabled={isSelect}
+        current={stock.symbol}
       />
     </div>
   )

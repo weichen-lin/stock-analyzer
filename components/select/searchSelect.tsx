@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { CircleNotch } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
@@ -19,10 +13,11 @@ interface SearchSelectProps {
   defaultOptions?: IStock[]
   onSelect: (e: { symbol: string; name: string }) => void
   disabled?: boolean
+  current?: string
 }
 
 const SearchSelect = (props: SearchSelectProps) => {
-  const { defaultOptions = [], onSelect, disabled } = props
+  const { defaultOptions = [], onSelect, disabled, current } = props
   const [options, setOptions] = useState<IStock[]>(defaultOptions)
   const [isSearching, setIsSearching] = useState(true)
   const [focused, setFocused] = useState(false)
@@ -64,7 +59,7 @@ const SearchSelect = (props: SearchSelectProps) => {
     <div className='w-full relative' ref={ref}>
       <Input
         placeholder='Search...'
-        value={value}
+        value={current && disabled ? current : value}
         onChange={(e) => {
           setValue(e.target.value)
         }}
@@ -98,9 +93,7 @@ const SearchSelect = (props: SearchSelectProps) => {
             </div>
           )}
           {options.length === 0 && !isSearching && (
-            <div className='w-full py-1 text-center text-slate-300 text-sm '>
-              No Results
-            </div>
+            <div className='w-full py-1 text-center text-slate-300 text-sm '>No Results</div>
           )}
         </motion.div>
       )}

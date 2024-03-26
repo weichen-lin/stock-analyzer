@@ -1,14 +1,9 @@
 'use client'
 
 import { useFormikContext, ArrayHelpers } from 'formik'
-import { ISetting } from '@/components/form/stock/type'
+import { ISettingData } from '@/finance/setting'
 import { Button } from '@/components/ui/button'
-import {
-  StockSelect,
-  StockInfo,
-  StockCost,
-  StockStatus
-} from '@/components/form/stock'
+import { StockSelect, StockInfo, StockCost, StockStatus, Total } from '@/components/form/stock'
 import clsx from 'clsx'
 import { ChevronDownIcon } from 'lucide-react'
 import { Trash } from '@phosphor-icons/react'
@@ -16,15 +11,9 @@ import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-function Stock({
-  index,
-  remove
-}: {
-  index: number
-  remove: (index: number) => void
-}) {
+function Stock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
-  const { values } = useFormikContext<ISetting>()
+  const { values } = useFormikContext<ISettingData>()
   const stock = values.stocks[index]
 
   return (
@@ -48,11 +37,7 @@ function Stock({
             disabled={!stock.symbol}
           >
             <ChevronDownIcon
-              className={cn(
-                'transition-transform duration-150 ease-out',
-                'w-5 h-5',
-                open ? 'rotate-180' : 'rotate-0'
-              )}
+              className={cn('transition-transform duration-150 ease-out', 'w-5 h-5', open ? 'rotate-180' : 'rotate-0')}
             />
           </Button>
           <Button
@@ -85,16 +70,8 @@ function Stock({
   )
 }
 
-const Stocks = ({
-  move,
-  swap,
-  push,
-  insert,
-  unshift,
-  pop,
-  remove
-}: ArrayHelpers) => {
-  const { values } = useFormikContext<ISetting>()
+const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers) => {
+  const { values } = useFormikContext<ISettingData>()
 
   return (
     <div className='space-y-2'>
@@ -112,7 +89,7 @@ const Stocks = ({
             image: '',
             price: '0.00',
             shares: '0',
-            averageCost: '0.00'
+            averageCost: '0.00',
           })
         }}
       >
