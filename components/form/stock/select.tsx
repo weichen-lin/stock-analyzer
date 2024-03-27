@@ -4,6 +4,7 @@ import { SearchSelect } from '@/components/select'
 import { useFormikContext } from 'formik'
 import { getStockProfile } from '@/finance/query'
 import { ISettingData } from '@/finance/setting'
+import currency from 'currency.js'
 
 function StockSelect({ index }: { index: number }) {
   const { values, setFieldValue } = useFormikContext<ISettingData>()
@@ -19,9 +20,11 @@ function StockSelect({ index }: { index: number }) {
           setFieldValue(`stocks[${index}].name`, name)
 
           const profile = await getStockProfile(symbol)
+
           if (profile) {
+            const price = currency(profile.price, { precision: 2 })
             setFieldValue(`stocks[${index}].image`, profile.image)
-            setFieldValue(`stocks[${index}].price`, profile.price)
+            setFieldValue(`stocks[${index}].price`, price.value)
           }
         }}
         disabled={isSelect}

@@ -60,7 +60,7 @@ function StockStatus({ index }: { index: number }) {
         <NumberInput
           number={stock.targetPosition}
           onChange={(e) => {
-            setFieldValue(`stocks[${index}].currentPosition`, e)
+            setFieldValue(`stocks[${index}].targetPosition`, e)
           }}
           max={100 - max}
         />

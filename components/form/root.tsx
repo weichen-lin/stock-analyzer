@@ -8,6 +8,7 @@ import { ISettingData } from '@/finance/setting'
 import { Total } from './stock'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { StockPie } from './charts'
+import { Positions } from './analysis'
 
 const SettingForm: FC<ISettingData> = (props: ISettingData) => {
   return (
@@ -19,7 +20,7 @@ const SettingForm: FC<ISettingData> = (props: ISettingData) => {
         <Tabs defaultValue='setting' className='w-full'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='setting'>倉位設置</TabsTrigger>
-            <TabsTrigger value='graph'>圖表呈現</TabsTrigger>
+            <TabsTrigger value='graph'>分析倉位</TabsTrigger>
           </TabsList>
           <TabsContent value='setting'>
             <Total />
@@ -30,6 +31,7 @@ const SettingForm: FC<ISettingData> = (props: ISettingData) => {
             <div className='flex items-center p-4'>
               <StockPie />
             </div>
+            <Positions />
           </TabsContent>
         </Tabs>
       </div>

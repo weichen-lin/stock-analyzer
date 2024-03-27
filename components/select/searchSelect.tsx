@@ -1,6 +1,5 @@
 'use client'
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { CircleNotch } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
@@ -36,7 +35,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       }
       fetchData()
     } else {
-      setOptions([]) // Clear options when search term is empty
+      setOptions([])
       setIsSearching(false)
     }
   }, [debouncedSearchTerm])

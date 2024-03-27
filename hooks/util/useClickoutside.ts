@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 type ClickOutsideHandler = (event: MouseEvent) => void
 
 const useClickOutside = <T extends HTMLElement>(ref: React.RefObject<T>, handler: ClickOutsideHandler): void => {
   useEffect(() => {
     const listener = (event: MouseEvent) => {
-      // Do nothing if clicking ref's element or its descendants
       if (!ref.current || ref.current.contains(event.target as Node)) {
         return
       }

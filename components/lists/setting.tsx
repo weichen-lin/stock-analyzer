@@ -1,13 +1,7 @@
 'use client'
 
 import { DotsThreeVertical } from '@phosphor-icons/react'
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import currency from 'currency.js'
 import { ISetting } from '@/finance/setting'
 import Link from 'next/link'
@@ -19,7 +13,7 @@ export default function Setting(props: ISetting) {
       <div className='flex flex-col items-center gap-x-2 justify-between hover:bg-slate-100 rounded-md border border-dashed p-2 w-full gap-y-4'>
         <div className='px-4 w-full truncate'>{name}</div>
         <div className='flex gap-x-4 justify-end w-full px-4'>
-          <Currency value={settings.cash} />
+          <Currency value={settings.total} />
           <DropdownMenu>
             <DropdownMenuTrigger className='bg-slate-100 rounded-md'>
               <DotsThreeVertical className='h-6 w-6' />
