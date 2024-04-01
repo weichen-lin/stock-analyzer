@@ -14,7 +14,7 @@ export default function NumberInput(props: {
   const [value, setValue] = useState(number)
 
   const onBlur = () => {
-    const val = currency(value)
+    const val = currency(value, { precision: 2 })
     const e = val.format({ separator: '', symbol: '' })
     if (val.value > max) {
       setValue(max.toString())

@@ -29,7 +29,6 @@ export default function Total() {
   const totalLower = currency(values.total).subtract(stocksValue)
 
   useEffect(() => {
-    console.log('update')
     let timeout = setTimeout(async () => {
       setIsUpdate(true)
       await updateSetting({

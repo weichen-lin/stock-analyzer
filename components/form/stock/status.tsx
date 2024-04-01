@@ -62,7 +62,7 @@ function StockStatus({ index }: { index: number }) {
           onChange={(e) => {
             setFieldValue(`stocks[${index}].targetPosition`, e)
           }}
-          max={100 - max}
+          max={100}
         />
       </div>
     </div>
