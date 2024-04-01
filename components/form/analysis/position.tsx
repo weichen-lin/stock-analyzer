@@ -48,24 +48,41 @@ export default function Positions() {
   const totalPosition = values.stocks.map((e) => e.targetPosition).reduce((a, b) => currency(a).add(b).value, 0)
 
   return (
-    <div className='flex items-center p-4 flex-col w-full bg-red-100'>
-      <div className='w-1/6'>總預計倉位{totalPosition}</div>
+    <div className='flex items-center p-4 flex-col w-full'>
       {!totalAlreadySet ? (
-        <div></div>
+        <div>請先設置總投入</div>
       ) : (
-        values.stocks
-          .filter((e) => checkValue(e))
-          .map((stock, index) => {
-            return (
-              <div key={index} className='flex items-center w-full justify-center'>
-                <div className='w-1/6'>{stock.symbol}</div>
-                距離目標倉位:
-                {getTargetPosition(stock)}% 股數:
-                {getStockNumber(stock)}
-              </div>
-            )
-          })
+        <table className='flex flex-col gap-x-2 items-center w-full'>
+          <th className='w-full flex gap-x-2 items-center justify-between divide-x-2 border-b-2'>
+            <td className='font-bold text-center px-1 w-[30%]'>股票代碼</td>
+            <td className='font-bold text-center px-1 w-[35%]'>距離目標比例</td>
+            <td className='font-bold text-center px-1 w-[35%]'>建議股數</td>
+          </th>
+          {values.stocks
+            .filter((e) => checkValue(e))
+            .map((stock, index) => {
+              return (
+                <tbody key={index} className='w-full flex gap-x-2 items-center justify-between divide-x-2'>
+                  <td className='text-center px-1 w-[30%]'>{stock.symbol}</td>
+                  <StockRatio num={getTargetPosition(stock)} />
+                  <StockNumber num={getStockNumber(stock)} />
+                </tbody>
+              )
+            })}
+        </table>
       )}
     </div>
   )
+}
+
+const StockRatio = ({ num }: { num: number }) => {
+  if (num === 0) return <td className='text-center px-1 w-[35%]'>--</td>
+  if (num < 0) return <td className='text-center px-1 w-[35%] text-red-500/70'>{num} %</td>
+  return <td className='text-center px-1 w-[35%] text-green-500/70'>{num} %</td>
+}
+
+const StockNumber = ({ num }: { num: number }) => {
+  if (num === 0) return <td className='text-center px-1 w-[35%]'>--</td>
+  if (num < 0) return <td className='text-center px-1 w-[35%] text-red-500/70'>賣出 {num} 股</td>
+  return <td className='text-center px-1 w-[35%] text-green-500/70'>買入 {num} 股</td>
 }

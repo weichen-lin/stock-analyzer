@@ -30,6 +30,10 @@ export default async function FormSetting({
     id: params.id
   })
 
+  if (!data) {
+    redirect('/lists')
+  }
+
   return (
     <div className='w-full mt-[56px] h-[100%-56px] pb-24'>
       <Sidebar />
