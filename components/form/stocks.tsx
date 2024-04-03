@@ -78,13 +78,13 @@ const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers
   const { values } = useFormikContext<ISettingData>()
 
   return (
-    <div className='space-y-2'>
+    <div className='space-y-2 mb-24'>
       {values.stocks.map((_, index) => (
         <Stock key={`stock_${index}`} index={index} remove={remove} />
       ))}
       <Button
         variant='outline'
-        className='ml-3 w-[120px]'
+        className='w-full mt-2'
         onClick={() => {
           push({
             symbol: '',

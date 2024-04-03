@@ -15,7 +15,7 @@ import Image from 'next/image'
 
 export default function SheetSide() {
   return (
-    <div className='w-full bg-slate-100/30 p-1 backdrop-blur-md fixed top-0 border-b-[1px] border-slate-300'>
+    <div className='w-full bg-slate-100/30 p-1 backdrop-blur-md fixed top-0 border-b-[1px] border-slate-300 flex gap-1 items-center'>
       <Sheet key='left'>
         <SheetTrigger asChild className=''>
           <Image src='/icon.png' alt='sidebar img' width={48} height={48} />
@@ -35,6 +35,7 @@ export default function SheetSide() {
           </SheetFooter>
         </SheetContent>
       </Sheet>
+      <div className='flex justify-end gap-4 p-2 dark:text-slate-100 text-xl font-semibold'>Stocker</div>
     </div>
   )
 }
