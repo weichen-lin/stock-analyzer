@@ -1,9 +1,9 @@
 'use client'
 
-import { useFormikContext, ArrayHelpers, useField } from 'formik'
+import { useFormikContext, ArrayHelpers } from 'formik'
 import { ISettingData } from '@/finance/setting'
 import { Button } from '@/components/ui/button'
-import { StockSelect, StockInfo, StockCost, StockStatus, Total } from '@/components/form/stock'
+import { StockSelect, StockInfo, StockCost, StockStatus } from '@/components/form/stock'
 import clsx from 'clsx'
 import { ChevronDownIcon } from 'lucide-react'
 import { Trash } from '@phosphor-icons/react'
@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { updateStore } from '@/store/stock'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 function Stock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
@@ -25,7 +26,8 @@ function Stock({ index, remove }: { index: number; remove: (index: number) => vo
       animate={{ x: 0, opacity: 1, transition: { duration: 0.3 } }}
       className={clsx(
         'w-full p-3 border-[1px] border-slate-300/50 rounded-md',
-        'flex flex-col gap-y-4 justify-start items-center bg-slate-100/20'
+        'flex flex-col gap-y-4 justify-start items-center bg-slate-100/20',
+        'max-w-[400px]'
       )}
     >
       <div className='w-full flex'>
@@ -78,10 +80,38 @@ const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers
   const { values } = useFormikContext<ISettingData>()
 
   return (
-    <div className='space-y-2 mb-24'>
-      {values.stocks.map((_, index) => (
-        <Stock key={`stock_${index}`} index={index} remove={remove} />
-      ))}
+    <div className='space-y-2 mb-24 flex flex-wrap gap-4 items-center justify-center'>
+      <DragDropContext
+        onDragEnd={(a) => {
+          // swap(a.destination, a.source)
+        }}
+      >
+        <Droppable droppableId='stocks'>
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps} className='w-full flex flex-wrap gap-4'>
+              {values.stocks.map((stock, index) =>
+                stock.symbol ? (
+                  <Draggable key={stock.symbol} draggableId={stock.symbol} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className='w-full'
+                      >
+                        <Stock index={index} remove={remove} />
+                      </div>
+                    )}
+                  </Draggable>
+                ) : (
+                  <Stock index={index} remove={remove} />
+                )
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <Button
         variant='outline'
         className='w-full mt-2'

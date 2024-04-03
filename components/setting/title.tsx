@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Title({ title }: { title: string }) {
   return (
-    <div className='flex gap-x-3 w-full justify-start items-center p-3'>
+    <div className='flex gap-x-3 w-full justify-start items-center p-3 md:py-3 md:px-0 max-w-[832px] mx-auto'>
       <Link href='/lists'>
         <CaretLeft className='w-6 h-6 text-slate-500' />
       </Link>

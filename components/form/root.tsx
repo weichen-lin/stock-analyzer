@@ -16,8 +16,8 @@ const SettingForm: FC<ISettingData> = (props: ISettingData) => {
       initialValues={props}
       onSubmit={(values: ISettingData, { setSubmitting }: FormikHelpers<ISettingData>) => {}}
     >
-      <div className='px-2 w-full'>
-        <Tabs defaultValue='setting' className='w-full'>
+      <div className='px-2 w-full max-w-[1280px] mx-auto'>
+        <Tabs defaultValue='setting' className='w-full max-w-[832px] mx-auto'>
           <TabsList className='grid w-full grid-cols-2'>
             <TabsTrigger value='setting'>倉位設置</TabsTrigger>
             <TabsTrigger value='graph'>分析倉位</TabsTrigger>
