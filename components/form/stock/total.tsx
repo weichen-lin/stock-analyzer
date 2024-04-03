@@ -46,7 +46,7 @@ export default function Total() {
 
   return (
     <div className='flex'>
-      <div className='flex flex-col p-3 space-y-4 mb-2 w-2/3'>
+      <div className='flex flex-col p-3 md:p-0 space-y-4 mb-2 w-2/3'>
         <div className='w-full flex flex-col justify-between gap-y-2'>
           <div className='flex w-full justify-between'>
             <div className='pl-2 font-semibold'>

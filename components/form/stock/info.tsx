@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { ISettingData } from '@/finance/setting'
 
 function StockInfo({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISettingData>()
+  const { values } = useFormikContext<ISettingData>()
   const stock = values.stocks[index]
 
   return (

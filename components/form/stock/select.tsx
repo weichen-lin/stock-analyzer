@@ -12,7 +12,7 @@ function StockSelect({ index }: { index: number }) {
   const isSelect = stock.symbol !== ''
 
   return (
-    <div className='w-2/3 space-y-2'>
+    <div className='w-2/3 md:w-full space-y-2'>
       <div className='pl-2 font-semibold'>股票代號</div>
       <SearchSelect
         onSelect={async ({ symbol, name }: { symbol: string; name: string }) => {
