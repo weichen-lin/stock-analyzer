@@ -15,4 +15,5 @@ jobs:
         run: npm install
       - name: Build for test
         run: |
+          echo ${{ secrets.SUPABASE_SETTING }} | base64 -d > .env.local &&
           npm run build
