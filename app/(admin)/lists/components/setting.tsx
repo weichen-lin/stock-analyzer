@@ -13,7 +13,7 @@ export default function Setting(props: ISetting) {
     <Link href={`/setting/${props.id}`}>
       <div
         className={clsx(
-          'flex flex-col items-center gap-x-2 justify-between',
+          'flex flex-col items-center gap-x-2 justify-between md:w-[95%] md:mx-auto',
           'hover:bg-slate-100 rounded-md border border-dashed p-2 w-full gap-y-4 dark:border-slate-100'
         )}
       >

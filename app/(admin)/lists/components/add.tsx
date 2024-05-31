@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { CurrencyInput } from '@/components/input'
@@ -41,9 +41,9 @@ export default function AddSetting() {
         cash: currency(value).format({
           precision: 2,
           separator: '',
-          symbol: ''
+          symbol: '',
         }),
-        name
+        name,
       })
 
       window.location.reload()
@@ -57,7 +57,9 @@ export default function AddSetting() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline'>新增規劃</Button>
+        <Button variant='outline' className='md:w-[95%] md:mx-auto'>
+          新增規劃
+        </Button>
       </DialogTrigger>
       <DialogContent className='w-[90%] rounded-md'>
         <DialogHeader>
@@ -87,12 +89,7 @@ export default function AddSetting() {
         </div>
         <DialogFooter className='flex flex-row justify-center gap-x-4 w-full'>
           <DialogClose asChild>
-            <Button
-              type='button'
-              variant='outline'
-              className='w-1/3'
-              onClick={clean}
-            >
+            <Button type='button' variant='outline' className='w-1/3' onClick={clean}>
               取消
             </Button>
           </DialogClose>
