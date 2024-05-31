@@ -14,7 +14,7 @@ export default function Index() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: process.env.VERCEL_URL ?? 'http://localhost:3000/auth/callback',
         queryParams: { next: '/lists' },
       },
     })
