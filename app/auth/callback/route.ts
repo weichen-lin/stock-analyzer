@@ -6,6 +6,8 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
 
+  cookies().getAll()
+
   if (code) {
     const cookieStore = cookies()
     const supabase = createServerClient(
@@ -21,8 +23,8 @@ export async function GET(request: Request) {
           },
           remove(name: string, options: CookieOptions) {
             cookieStore.delete({ name, ...options })
-          }
-        }
+          },
+        },
       }
     )
     const { error } = await supabase.auth.exchangeCodeForSession(code)

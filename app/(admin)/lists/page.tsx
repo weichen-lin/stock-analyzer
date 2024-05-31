@@ -1,24 +1,14 @@
 'use server'
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import Sidebar from '@/components/sidebar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AddSetting } from '@/components/lists'
-import { redirect } from 'next/navigation'
 import Settings from '@/components/lists/settings'
 import { Suspense } from 'react'
+import { useServerUser } from '@/hooks/auth'
 
 export default async function RequiredSession() {
-  const supabase = createServerComponentClient({ cookies })
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  if (!session) {
-    redirect('/login')
-  }
+  const { email } = await useServerUser()
 
   return (
     <div className='w-full flex-1 mt-[56px] h-full'>
@@ -39,7 +29,7 @@ export default async function RequiredSession() {
             </div>
           }
         >
-          <Settings email={session.user.email as string} />
+          <Settings email={email} />
         </Suspense>
         <AddSetting />
       </div>

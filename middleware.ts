@@ -17,5 +17,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/lists/:path*']
+  matcher: ['/lists/:path*'],
 }

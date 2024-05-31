@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ModeToggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { GithubLogo, FacebookLogo, GoogleLogo } from '@phosphor-icons/react'
+import { GoogleLogo } from '@phosphor-icons/react'
 
 export default function Index() {
   const supabase = createClientComponentClient()
