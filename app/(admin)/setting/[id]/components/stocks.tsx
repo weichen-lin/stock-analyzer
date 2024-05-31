@@ -3,9 +3,16 @@
 import { useFormikContext, ArrayHelpers } from 'formik'
 import { ISettingData } from '@/finance/setting'
 import { Button } from '@/components/ui/button'
-import { Stock } from '@/components/form/stock'
-import { useState, useEffect } from 'react'
+import clsx from 'clsx'
+import { ChevronDownIcon } from 'lucide-react'
+import { Trash } from '@phosphor-icons/react'
+import { cn } from '@/lib/utils'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { updateStore } from '@/store/stock'
 import { DragDropContext, Droppable, Draggable, DroppableProps } from 'react-beautiful-dnd'
+import { useEffect } from 'react'
+import { Stock } from './stock'
 
 const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   const [enabled, setEnabled] = useState(false)
