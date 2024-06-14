@@ -10,43 +10,36 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { CurrencyInput } from '@/components/input'
 import { useState } from 'react'
-import currency from 'currency.js'
-import { createSetting } from '@/finance/setting'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { PlusIcon } from '@radix-ui/react-icons'
+import { Coin } from '@phosphor-icons/react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { useRouter } from 'next/navigation'
 
 export default function AddSetting() {
   const [name, setName] = useState('')
-  const [value, setValue] = useState('0.00')
+  const [region, setRegion] = useState('tw')
   const [isCreate, setIsCreate] = useState(false)
   const [error, setError] = useState('')
-  const cantAdd = name === '' || currency(value).value <= 0
+
+  const router = useRouter()
 
   const clean = () => {
     setName('')
-    setValue('0.00')
   }
-
-  const supabase = createClientComponentClient()
 
   const handleAddSetting = async () => {
     try {
       setError('')
       setIsCreate(true)
-      const { data } = await supabase.auth.getSession()
-      await createSetting({
-        user_email: data.session?.user?.email as string,
-        cash: currency(value).format({
-          precision: 2,
-          separator: '',
-          symbol: '',
-        }),
-        name,
-      })
+      const res = await fetch('/api/setting', { method: 'POST', body: JSON.stringify({ name, region }) })
+      const data = await res.json()
+      if (data.error) {
+        throw new Error(data.error)
+      }
 
-      window.location.reload()
+      window?.location.reload()
     } catch (e: any) {
       setError(e.message)
     } finally {
@@ -55,17 +48,31 @@ export default function AddSetting() {
   }
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant='outline' className='md:w-[95%] md:mx-auto'>
-          新增規劃
-        </Button>
-      </DialogTrigger>
-      <DialogContent className='w-[90%] rounded-md'>
-        <DialogHeader>
-          <DialogTitle>新增一筆財務規劃</DialogTitle>
-        </DialogHeader>
-        <div className='flex flex-col items-center space-y-2'>
+    <div className='flex justify-between'>
+      <p className='text-sm text-slate-500 flex gap-x-2 items-center'>
+        <Coin className='w-4 h-4' />
+        <span>總資產</span>
+      </p>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='outline' size='icon'>
+            <PlusIcon className='w-5 h-5' />
+            <span className='hidden md:block'>新增投資</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className='w-[90%] rounded-md space-y-4'>
+          <DialogHeader>
+            <DialogTitle>新增一筆投資</DialogTitle>
+          </DialogHeader>
+          <Select onValueChange={(e) => setRegion(e)} defaultValue={region}>
+            <SelectTrigger>
+              <SelectValue placeholder='請選擇市場' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='tw'>台股</SelectItem>
+              <SelectItem value='us'>美股</SelectItem>
+            </SelectContent>
+          </Select>
           <Input
             value={name}
             onChange={(e) => {
@@ -79,35 +86,28 @@ export default function AddSetting() {
               e.preventDefault()
             }}
           />
-          <CurrencyInput
-            placeholder='請輸入金額'
-            cashValue={value}
-            onChange={(e) => {
-              setValue(e)
-            }}
-          />
-        </div>
-        <DialogFooter className='flex flex-row justify-center gap-x-4 w-full'>
-          <DialogClose asChild>
-            <Button type='button' variant='outline' className='w-1/3' onClick={clean}>
-              取消
+          <DialogFooter className='flex flex-row justify-center gap-x-4 w-full'>
+            <DialogClose asChild>
+              <Button type='button' variant='outline' className='w-1/3' onClick={clean}>
+                取消
+              </Button>
+            </DialogClose>
+            <Button
+              type='button'
+              variant='default'
+              className='w-1/3'
+              disabled={name === '' || isCreate}
+              onClick={async () => {
+                await handleAddSetting()
+              }}
+              loading={isCreate}
+            >
+              新增
             </Button>
-          </DialogClose>
-          <Button
-            type='button'
-            variant='default'
-            className='w-1/3'
-            disabled={cantAdd}
-            onClick={async () => {
-              await handleAddSetting()
-            }}
-            loading={isCreate}
-          >
-            新增
-          </Button>
-        </DialogFooter>
-        {error && <div className='text-red-500'>{error}</div>}
-      </DialogContent>
-    </Dialog>
+          </DialogFooter>
+          {error && <div className='text-red-500'>{error}</div>}
+        </DialogContent>
+      </Dialog>
+    </div>
   )
 }

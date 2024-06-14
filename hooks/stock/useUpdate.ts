@@ -1,12 +1,12 @@
 import { updateStore } from '@/store/stock'
 import { useFormikContext } from 'formik'
 import { getStockProfile } from '@/finance/query'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import currency from 'currency.js'
 
 const useUpdate = () => {
   const { startUpdate, setStartUpdate } = updateStore()
-  const { values, setFieldValue } = useFormikContext<ISettingData>()
+  const { values, setFieldValue } = useFormikContext<IStocksSchema>()
 
   const updateStocks = async () => {
     setStartUpdate(true)

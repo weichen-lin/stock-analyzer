@@ -4,7 +4,7 @@ import StockCost from './cost'
 import StockStatus from './status'
 import Total from './total'
 import { useFormikContext } from 'formik'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import { Button } from '@/components/ui/button'
 import clsx from 'clsx'
 import { ChevronDownIcon } from 'lucide-react'
@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input'
 
 function MobileStock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
-  const { values } = useFormikContext<ISettingData>()
+  const { values } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
   const { startUpdate } = updateStore()
 
@@ -81,7 +81,7 @@ function MobileStock({ index, remove }: { index: number; remove: (index: number)
 }
 
 function DesktopStock({ index, remove }: { index: number; remove: (index: number) => void }) {
-  const { values } = useFormikContext<ISettingData>()
+  const { values } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
   const [open, setOpen] = useState(false)
   const { startUpdate } = updateStore()

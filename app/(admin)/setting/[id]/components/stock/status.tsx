@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormikContext } from 'formik'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import { Input } from '@/components/ui/input'
 import currency from 'currency.js'
 import { NumberInput } from '@/components/input'
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 function StockStatus({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISettingData>()
+  const { values, setFieldValue } = useFormikContext<IStocksSchema>()
   const [position, setPosition] = useState('0.00')
   const [error, setError] = useState(false)
   const stock = values.stocks[index]

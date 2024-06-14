@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormikContext, ArrayHelpers } from 'formik'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import { Button } from '@/components/ui/button'
 import clsx from 'clsx'
 import { ChevronDownIcon } from 'lucide-react'
@@ -33,8 +33,8 @@ const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   return <Droppable {...props}>{children}</Droppable>
 }
 
-const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers) => {
-  const { values } = useFormikContext<ISettingData>()
+const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
+  const { values } = useFormikContext<IStocksSchema>()
 
   return (
     <div className='mb-24'>
@@ -80,7 +80,7 @@ const Stocks = ({ move, swap, push, insert, unshift, pop, remove }: ArrayHelpers
             name: '',
             targetPosition: '0.00',
             image: '',
-            price: '0.00',
+            price: 0,
             shares: '0',
             averageCost: '0.00',
           })

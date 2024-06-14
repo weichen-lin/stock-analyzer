@@ -2,19 +2,18 @@
 
 import { Formik, FormikHelpers, FieldArray, ArrayHelpers } from 'formik'
 import { FC } from 'react'
-import Cash from './cash'
 import Stocks from './stocks'
-import { ISettingData } from '@/finance/setting'
 import { Total } from './stock'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { StockPie } from './charts'
 import { Positions } from './analysis'
+import { IStocksSchema } from '@/app/api/setting/type'
 
-const SettingForm: FC<ISettingData> = (props: ISettingData) => {
+const SettingForm: FC<IStocksSchema> = (props: IStocksSchema) => {
   return (
     <Formik
       initialValues={props}
-      onSubmit={(values: ISettingData, { setSubmitting }: FormikHelpers<ISettingData>) => {}}
+      onSubmit={(values: IStocksSchema, { setSubmitting }: FormikHelpers<IStocksSchema>) => {}}
     >
       <div className='px-2 w-full max-w-[1280px] mx-auto'>
         <Tabs defaultValue='setting' className='w-full'>
@@ -24,7 +23,6 @@ const SettingForm: FC<ISettingData> = (props: ISettingData) => {
           </TabsList>
           <TabsContent value='setting'>
             <Total />
-            <Cash />
             <FieldArray name='stocks'>{(helper: ArrayHelpers) => <Stocks {...helper} />}</FieldArray>
           </TabsContent>
           <TabsContent value='graph'>

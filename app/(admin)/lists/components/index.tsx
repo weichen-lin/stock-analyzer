@@ -1,5 +1,7 @@
 import Setting from './setting'
 import AddSetting from './add'
-import Settings from './settings'
+import { ISetting, settingSchema } from './type'
 
-export { Setting, AddSetting, Settings }
+export { Setting, AddSetting }
+export { settingSchema }
+export type { ISetting }

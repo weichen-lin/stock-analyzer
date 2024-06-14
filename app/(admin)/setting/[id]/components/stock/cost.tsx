@@ -1,12 +1,12 @@
 'use client'
 
 import { useFormikContext } from 'formik'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import { Input } from '@/components/ui/input'
 import { WholeNumberInput, CurrencyInput } from '@/components/input'
 
 function StockCost({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISettingData>()
+  const { values, setFieldValue } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
 
   return (

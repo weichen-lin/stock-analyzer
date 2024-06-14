@@ -3,11 +3,11 @@
 import { SearchSelect } from '@/components/select'
 import { useFormikContext } from 'formik'
 import { getStockProfile } from '@/finance/query'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 import currency from 'currency.js'
 
 function StockSelect({ index }: { index: number }) {
-  const { values, setFieldValue } = useFormikContext<ISettingData>()
+  const { values, setFieldValue } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
   const isSelect = stock.symbol !== ''
 

@@ -3,10 +3,10 @@
 import { useFormikContext } from 'formik'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
-import { ISettingData } from '@/finance/setting'
+import { IStocksSchema } from '@/app/api/setting/type'
 
 function StockInfo({ index }: { index: number }) {
-  const { values } = useFormikContext<ISettingData>()
+  const { values } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
 
   return (
