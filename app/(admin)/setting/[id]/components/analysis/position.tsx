@@ -1,12 +1,12 @@
 import { useFormikContext } from 'formik'
-import { ISettingData, IStockConfig } from '@/finance/setting'
+import { IStocksSchema, IStockSchema } from '@/app/api/setting/type'
 import currency from 'currency.js'
 import { cn } from '@/lib/utils'
 
 export default function Positions() {
-  const { values } = useFormikContext<ISettingData>()
+  const { values } = useFormikContext<IStocksSchema>()
 
-  const checkValue = (e: IStockConfig) => {
+  const checkValue = (e: IStockSchema) => {
     const shares = currency(e.averageCost).value > 0
     const price = currency(e.price).value > 0
     const cost = currency(e.averageCost).value > 0
@@ -19,7 +19,7 @@ export default function Positions() {
     }
   }
 
-  const getCurrentPosition = (stock: IStockConfig) => {
+  const getCurrentPosition = (stock: IStockSchema) => {
     if (
       currency(stock.shares).value === 0 ||
       currency(stock.averageCost).value === 0 ||
@@ -33,11 +33,13 @@ export default function Positions() {
       .multiply(100)
   }
 
-  const getTargetPosition = (stock: IStockConfig) => {
-    return currency(stock.targetPosition, { precision: 2 }).subtract(getCurrentPosition(stock)).value
+  const getTargetPosition = (stock: IStockSchema) => {
+    return currency(stock.targetPosition, { precision: 2 }).subtract(
+      getCurrentPosition(stock)
+    ).value
   }
 
-  const getStockNumber = (stock: IStockConfig) => {
+  const getStockNumber = (stock: IStockSchema) => {
     return currency(getTargetPosition(stock), { precision: 2 })
       .divide(100)
       .multiply(currency(values.total))
@@ -46,7 +48,9 @@ export default function Positions() {
 
   const totalAlreadySet = currency(values.total).value > 0
 
-  const totalPosition = values.stocks.map((e) => e.targetPosition).reduce((a, b) => currency(a).add(b).value, 0)
+  const totalPosition = values.stocks
+    .map((e) => e.targetPosition)
+    .reduce((a, b) => currency(a).add(b).value, 0)
 
   return (
     <div className='flex items-center p-4 flex-col w-full'>
@@ -82,9 +86,13 @@ export default function Positions() {
                   >
                     <td className='w-[20%] flex flex-col px-1' align='left'>
                       <span className='font-semibold'>{stock.symbol}</span>
-                      <span className='text-sm w-full text-left font-normal'>{stock.shares}股</span>
+                      <span className='text-sm w-full text-left font-normal'>
+                        {stock.shares}股
+                      </span>
                     </td>
-                    <td className='text-center px-1 w-[20%]'>{stock.targetPosition}</td>
+                    <td className='text-center px-1 w-[20%]'>
+                      {stock.targetPosition}
+                    </td>
                     <StockRatio num={getTargetPosition(stock)} />
                     <StockNumber num={getStockNumber(stock)} />
                   </tr>
@@ -98,7 +106,8 @@ export default function Positions() {
 }
 
 const StockRatio = ({ num }: { num: number }) => {
-  if (num === 0) return <td className='text-center px-1 w-[30%] font-normal'>--</td>
+  if (num === 0)
+    return <td className='text-center px-1 w-[30%] font-normal'>--</td>
   if (num < 0)
     return (
       <td className='text-center px-1 w-[30%] text-red-500/70 flex flex-col sm:flex-row font-normal sm:justify-center sm:gap-x-2'>
@@ -115,7 +124,8 @@ const StockRatio = ({ num }: { num: number }) => {
 }
 
 const StockNumber = ({ num }: { num: number }) => {
-  if (num === 0) return <td className='text-center px-1 w-[30%] font-normal'>--</td>
+  if (num === 0)
+    return <td className='text-center px-1 w-[30%] font-normal'>--</td>
   if (num < 0)
     return (
       <td className='text-center px-1 w-[30%] text-red-500/70 flex flex-col sm:flex-row font-normal sm:justify-center sm:gap-x-2'>
