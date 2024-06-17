@@ -3,13 +3,7 @@
 import { useFormikContext, ArrayHelpers } from 'formik'
 import { IStocksSchema } from '@/app/api/setting/type'
 import { Button } from '@/components/ui/button'
-import clsx from 'clsx'
-import { ChevronDownIcon } from 'lucide-react'
-import { Trash } from '@phosphor-icons/react'
-import { cn } from '@/lib/utils'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { updateStore } from '@/store/stock'
 import { DragDropContext, Droppable, Draggable, DroppableProps } from 'react-beautiful-dnd'
 import { useEffect } from 'react'
 import { Stock } from './stock'
@@ -39,19 +33,19 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
   return (
     <div className='mb-24'>
       <DragDropContext
-        onDragEnd={(status) => {
+        onDragEnd={status => {
           if (status.destination) {
             swap(status.source.index, status.destination.index)
           }
         }}
       >
         <StrictModeDroppable droppableId='stocks'>
-          {(provided) => (
+          {provided => (
             <div ref={provided.innerRef} {...provided.droppableProps} className='w-full flex flex-col gap-y-4'>
               {values.stocks.map((stock, index) =>
                 stock.symbol && stock.symbol !== '' ? (
                   <Draggable key={`stock-${stock.symbol}-${index}`} draggableId={stock.symbol} index={index}>
-                    {(provided) => (
+                    {provided => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
@@ -64,7 +58,7 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
                   </Draggable>
                 ) : (
                   <Stock index={index} remove={remove} key={`stock-empty-${index}`} />
-                )
+                ),
               )}
               {provided.placeholder}
             </div>

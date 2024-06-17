@@ -25,7 +25,7 @@ export default function Setting(props: ISetting) {
         className={clsx(
           'flex flex-col items-center gap-x-2 justify-between w-[365px] relative shadow-sm',
           'hover:bg-slate-100 rounded-md border p-2 w-full gap-y-4 dark:border-slate-100',
-          'before:absolute before:h-full before:w-1 before:bg-blue-500 before:top-0 before:left-0 before:z-0 before:rounded-l-md'
+          'before:absolute before:h-full before:w-1 before:bg-blue-500 before:top-0 before:left-0 before:z-0 before:rounded-l-md',
         )}
       >
         <div className='pr-2 pl-3 w-full truncate text-lg flex justify-between items-center'>
@@ -39,7 +39,7 @@ export default function Setting(props: ISetting) {
             {updatedAt.getMonth() + 1}月 {updatedAt.getDate()}日 更新
           </div>
           <div className='flex gap-x-3 items-center'>
-            <Currency value={total} />
+            <Currency value={total} symbol={region === 'tw' ? 'NTD' : 'USD'} />
             <DropdownMenu>
               <DropdownMenuTrigger className='rounded-md'>
                 <DotsThreeVertical className='h-6 w-6' />
@@ -58,13 +58,13 @@ export default function Setting(props: ISetting) {
   )
 }
 
-const Currency = ({ value }: { value: string }) => {
+const Currency = ({ value, symbol }: { value: string; symbol: string }) => {
   const formatted = currency(value).format({ symbol: '', precision: 2 })
   const [whole, decimal] = formatted.split('.')
 
   return (
     <div className='flex gap-x-2 items-center'>
-      <div>$</div>
+      <div className='text-sm text-slate-500 pt-[2px]'>{symbol}</div>
       <div className='flex align-bottom'>
         <div className='font-bold text-lg'>{whole}.</div>
         <div className='pt-[2px]'>{decimal}</div>

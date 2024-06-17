@@ -4,19 +4,20 @@ import { CircleNotch } from '@phosphor-icons/react'
 import { useEffect, useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
 import { motion } from 'framer-motion'
-import { queryStocks, IStock } from '@/finance/query'
+import { queryUSStocks, queryTWStocks, IStock } from '@/finance/query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useClickOutside } from '@/hooks/util'
 
 interface SearchSelectProps {
+  region: string
   defaultOptions?: IStock[]
-  onSelect: (e: { symbol: string; name: string }) => void
+  onSelect: (e: IStock) => void
   disabled?: boolean
   current?: string
 }
 
 const SearchSelect = (props: SearchSelectProps) => {
-  const { defaultOptions = [], onSelect, disabled, current } = props
+  const { defaultOptions = [], onSelect, disabled, current, region } = props
   const [options, setOptions] = useState<IStock[]>(defaultOptions)
   const [isSearching, setIsSearching] = useState(true)
   const [focused, setFocused] = useState(false)
@@ -29,7 +30,9 @@ const SearchSelect = (props: SearchSelectProps) => {
     if (debouncedSearchTerm && focused) {
       setIsSearching(true)
       const fetchData = async () => {
-        const data = await queryStocks(debouncedSearchTerm)
+        const data =
+          region === 'us' ? await queryUSStocks(debouncedSearchTerm) : await queryTWStocks(debouncedSearchTerm)
+
         setOptions(data)
         setIsSearching(false)
       }
@@ -45,10 +48,10 @@ const SearchSelect = (props: SearchSelectProps) => {
   })
 
   const handleSelect = (value: string) => {
-    const info = options.find((e) => e.symbol === value)
+    const info = options.find(e => e.symbol === value)
     if (info) {
       setValue(info.symbol)
-      onSelect({ symbol: info.symbol, name: info.name })
+      onSelect({ symbol: info.symbol, name: info.name, key: info.key })
     }
 
     setFocused(false)
@@ -59,7 +62,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       <Input
         placeholder='Search...'
         value={current && disabled ? current : value}
-        onChange={(e) => {
+        onChange={e => {
           setValue(e.target.value)
         }}
         onFocus={async () => {
@@ -69,7 +72,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       />
       {focused && (
         <motion.div
-          className='origin-top absolute z-10 w-full bg-white shadow-lg rounded-md py-1 mt-1 overflow-y-auto top-[110%] space-y-2 px-2'
+          className='origin-top absolute z-10 w-full bg-white shadow-lg rounded-md py-1 mt-1 top-[110%] space-y-2 px-2 max-h-[150px] overflow-y-scroll'
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           exit={{ scaleY: 0 }}

@@ -31,7 +31,7 @@ function MobileStock({ index, remove }: { index: number; remove: (index: number)
       className={clsx(
         'w-full p-3 border-[1px] border-slate-300/50 rounded-md',
         'flex flex-col gap-y-4 justify-start items-center bg-slate-100/20',
-        'max-w-[400px]'
+        'max-w-[400px]',
       )}
     >
       <div className='w-full flex'>
@@ -86,12 +86,14 @@ function DesktopStock({ index, remove }: { index: number; remove: (index: number
   const [open, setOpen] = useState(false)
   const { startUpdate } = updateStore()
 
+  const region = values.region
+
   return (
     <div
       className={clsx(
         'w-full p-3 border-[1px] border-slate-300/50 rounded-md',
         'flex flex-col gap-y-4 justify-start items-center bg-slate-100/20',
-        'max-w-[832px]'
+        'max-w-[832px]',
       )}
     >
       <div className='w-full flex justify-between gap-x-3'>
@@ -116,7 +118,7 @@ function DesktopStock({ index, remove }: { index: number; remove: (index: number
                   className={cn(
                     'transition-transform duration-150 ease-out rounded-md',
                     'w-5 h-5 text-slate-700',
-                    open ? 'rotate-0' : 'rotate-180'
+                    open ? 'rotate-0' : 'rotate-180',
                   )}
                   onClick={() => setOpen(!open)}
                 />
@@ -137,7 +139,7 @@ function DesktopStock({ index, remove }: { index: number; remove: (index: number
               className={cn(
                 'transition-transform duration-150 ease-out rounded-md',
                 'w-5 h-5 text-slate-700',
-                open ? 'rotate-0' : 'rotate-180'
+                open ? 'rotate-0' : 'rotate-180',
               )}
               onClick={() => setOpen(!open)}
             />

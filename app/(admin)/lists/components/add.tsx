@@ -17,7 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation'
 
-export default function AddSetting() {
+export default function AddSetting({ totals }: { totals: number }) {
   const [name, setName] = useState('')
   const [region, setRegion] = useState('tw')
   const [isCreate, setIsCreate] = useState(false)
@@ -52,6 +52,7 @@ export default function AddSetting() {
       <p className='text-sm text-slate-500 flex gap-x-2 items-center'>
         <Coin className='w-4 h-4' />
         <span>總資產</span>
+        <span className='text-lg'>{totals}</span>
       </p>
       <Dialog>
         <DialogTrigger asChild>
@@ -64,7 +65,7 @@ export default function AddSetting() {
           <DialogHeader>
             <DialogTitle>新增一筆投資</DialogTitle>
           </DialogHeader>
-          <Select onValueChange={(e) => setRegion(e)} defaultValue={region}>
+          <Select onValueChange={e => setRegion(e)} defaultValue={region}>
             <SelectTrigger>
               <SelectValue placeholder='請選擇市場' />
             </SelectTrigger>
@@ -75,14 +76,14 @@ export default function AddSetting() {
           </Select>
           <Input
             value={name}
-            onChange={(e) => {
+            onChange={e => {
               setName(e.target.value)
             }}
             placeholder='請輸入名稱'
-            onFocus={(e) => {
+            onFocus={e => {
               e.target.select()
             }}
-            onContextMenu={(e) => {
+            onContextMenu={e => {
               e.preventDefault()
             }}
           />
