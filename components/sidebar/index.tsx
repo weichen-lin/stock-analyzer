@@ -1,10 +1,13 @@
 'use client'
 
-import { useDevice } from '@/hooks/util'
 import SheetSide from './mobile'
+import Desktop from './desktop'
 
 export default function Sidebar() {
-  const { isMobile } = useDevice()
-
-  return <SheetSide />
+  return (
+    <>
+      <SheetSide />
+      <Desktop />
+    </>
+  )
 }

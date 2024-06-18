@@ -15,7 +15,7 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import { Coin } from '@phosphor-icons/react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { useRouter } from 'next/navigation'
+import currency from 'currency.js'
 
 export default function AddSetting({ totals }: { totals: number }) {
   const [name, setName] = useState('')
@@ -23,7 +23,7 @@ export default function AddSetting({ totals }: { totals: number }) {
   const [isCreate, setIsCreate] = useState(false)
   const [error, setError] = useState('')
 
-  const router = useRouter()
+  const t = currency(totals, { symbol: 'NTD', decimal: '.', separator: ',' }).format()
 
   const clean = () => {
     setName('')
@@ -51,8 +51,8 @@ export default function AddSetting({ totals }: { totals: number }) {
     <div className='flex justify-between'>
       <p className='text-sm text-slate-500 flex gap-x-2 items-center'>
         <Coin className='w-4 h-4' />
-        <span>總資產</span>
-        <span className='text-lg'>{totals}</span>
+        <span>目前總資產</span>
+        <span className='text-lg'>{t}</span>
       </p>
       <Dialog>
         <DialogTrigger asChild>

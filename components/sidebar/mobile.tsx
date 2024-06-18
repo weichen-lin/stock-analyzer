@@ -15,7 +15,7 @@ import Image from 'next/image'
 
 export default function SheetSide() {
   return (
-    <div className='w-full bg-white p-1 backdrop-blur-md fixed top-0 border-b-[1px] border-slate-100 flex gap-1 items-center z-20'>
+    <div className='w-full bg-white p-1 backdrop-blur-md fixed top-0 border-b-[1px] border-slate-100 flex gap-1 items-center z-20 md:hidden'>
       <Sheet key='left'>
         <SheetTrigger asChild className=''>
           <Image src='/icon.png' alt='sidebar img' width={48} height={48} />

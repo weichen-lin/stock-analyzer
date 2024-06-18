@@ -24,14 +24,14 @@ export default async function Lists() {
     .from('settings')
     .select('id, user_id, name, region, total, update_at')
     .eq('user_id', data.user.id)
-    .order('update_at', { ascending: true })
+    .order('update_at', { ascending: false })
 
   if (error) {
     redirect('/login')
   }
 
   try {
-    const ratios = await fetch('https://tw.rter.info/capi.php', { method: 'GET' })
+    const ratios = await fetch('https://tw.rter.info/capi.php', { method: 'GET', cache: 'no-store' })
     const d = usdtwdSchema.parse(await ratios.json())
 
     const settings = lists.map(setting => settingSchema.parse(setting))

@@ -19,12 +19,12 @@ export default function Setting(props: ISetting) {
   const updatedAt = new Date(update_at)
 
   return (
-    <Link href={`/setting/${props.id}`}>
+    <Link href={`/setting/${props.id}`} className='w-[365px]'>
       <motion.div
         whileHover={{ scale: 1.02 }}
         className={clsx(
-          'flex flex-col items-center gap-x-2 justify-between w-[365px] relative shadow-sm',
-          'hover:bg-slate-100 rounded-md border p-2 w-full gap-y-4 dark:border-slate-100',
+          'flex flex-col items-center gap-x-2 justify-between relative shadow-sm w-full',
+          'hover:bg-slate-100 rounded-md border p-2 gap-y-4 dark:border-slate-100',
           'before:absolute before:h-full before:w-1 before:bg-blue-500 before:top-0 before:left-0 before:z-0 before:rounded-l-md',
         )}
       >
