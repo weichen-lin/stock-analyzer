@@ -19,7 +19,7 @@ export default function Setting(props: ISetting) {
   const updatedAt = new Date(update_at)
 
   return (
-    <Link href={`/setting/${props.id}`} className='w-[365px]'>
+    <Link href={`/setting/${props.id}`} className='w-full md:w-[330px]'>
       <motion.div
         whileHover={{ scale: 1.02 }}
         className={clsx(

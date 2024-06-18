@@ -48,7 +48,7 @@ export default function AddSetting({ totals }: { totals: number }) {
   }
 
   return (
-    <div className='flex justify-between'>
+    <div className='flex justify-between md:justify-start px-4 w-full md:w-[450px] gap-x-6 pt-[72px] md:pt-0'>
       <p className='text-sm text-slate-500 flex gap-x-2 items-center'>
         <Coin className='w-4 h-4' />
         <span>目前總資產</span>
@@ -56,12 +56,12 @@ export default function AddSetting({ totals }: { totals: number }) {
       </p>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size='icon'>
+          <Button variant='outline' size='icon' className='md:px-12'>
             <PlusIcon className='w-5 h-5' />
-            <span className='hidden md:block'>新增投資</span>
+            <div className='hidden md:block'>新增投資</div>
           </Button>
         </DialogTrigger>
-        <DialogContent className='w-[90%] rounded-md space-y-4'>
+        <DialogContent className='w-[380px] rounded-md space-y-4'>
           <DialogHeader>
             <DialogTitle>新增一筆投資</DialogTitle>
           </DialogHeader>

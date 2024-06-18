@@ -47,10 +47,10 @@ export default async function Lists() {
     })
 
     return (
-      <div className='w-full flex-1 pt-[72px] h-full'>
-        <div className='px-4 flex flex-col gap-y-4 pb-8'>
-          <AddSetting totals={totals} />
-          <div className='flex flex-col gap-4'>
+      <div className='flex-1 md:pt-6 pt-18 h-full flex items-start justify-start flex-col gap-y-6 w-full'>
+        <AddSetting totals={totals} />
+        <div className='px-4 flex flex-col gap-y-4 pb-8 w-full'>
+          <div className='flex flex-col gap-4 md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
             {settings.map(setting => (
               <Setting key={setting.id} {...setting} />
             ))}
