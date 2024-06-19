@@ -44,14 +44,16 @@ export default function Planner() {
   }
 
   return (
-    <div className='mt-1'>
-      <div className='flex gap-x-3 w-full justify-start items-center p-3 md:py-3 md:px-0 max-w-[832px] mx-auto'>
+    <div className='w-full h-full flex flex-col justify-start pt-[72px]'>
+      <div className='flex gap-x-3 w-full justify-start items-center p-3 md:p-7'>
         <Link href='/lists'>
           <CaretLeft className='w-6 h-6 text-slate-500' />
         </Link>
         <p className='font-bold text-xl text-slate-500'>{data.name}</p>
       </div>
-      <SettingForm {...data} />
+      <div className='flex-1'>
+        <SettingForm {...data} />
+      </div>
     </div>
   )
 }

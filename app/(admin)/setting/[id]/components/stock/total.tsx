@@ -44,7 +44,7 @@ export default function Total() {
   const { id } = useParams()
 
   const stocksValue = values.stocks
-    .map((e) => {
+    .map(e => {
       if (currency(e.shares).value === 0) return 0
       return currency(e.shares).multiply(e.price).value
     })
@@ -65,7 +65,7 @@ export default function Total() {
 
       setIsUpdate(false)
     }, 750),
-    []
+    [],
   )
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function Total() {
   }, [values.stocks])
 
   return (
-    <div className='w-full flex flex-col justify-between gap-y-3 p-2 mt-4'>
+    <div className='w-full md:max-w-[480px] flex flex-col justify-between gap-y-3 p-2 mt-4'>
       <div className='flex w-full justify-start items-center gap-x-4'>
         <div className='pl-1 font-semibold'>目前資產總價值</div>
         {isUpdate && (

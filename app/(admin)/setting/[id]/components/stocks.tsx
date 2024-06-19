@@ -27,11 +27,66 @@ const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   return <Droppable {...props}>{children}</Droppable>
 }
 
-const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
+export const DesktopStocks = ({ swap, push, remove }: ArrayHelpers) => {
   const { values } = useFormikContext<IStocksSchema>()
 
   return (
-    <div className='mb-24'>
+    <div className='mb-24 h-full overflow-y-auto'>
+      <DragDropContext
+        onDragEnd={status => {
+          if (status.destination) {
+            swap(status.source.index, status.destination.index)
+          }
+        }}
+      >
+        <div className='grid grid-cols-[100px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] py-2'>
+          <div className='bg-red-100'></div>
+          <div className='bg-yellow-300 text-center'>代號</div>
+          <div className='bg-green-300'>名稱</div>
+          <div className='bg-yellow-100'>持有股數</div>
+          <div className='bg-green-100'>平均成本</div>
+          <div className='bg-red-100'>市值</div>
+          <div className='bg-yellow-100'>漲跌幅</div>
+          <div className='bg-green-100'>當前倉位 (%)</div>
+          <div className='bg-red-100'>目標倉位 (%)</div>
+        </div>
+        <StrictModeDroppable droppableId='stocks'>
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {values.stocks.map((stock, index) =>
+                stock.symbol && stock.symbol !== '' ? (
+                  <Draggable key={`stock-${stock.symbol}-${index}`} draggableId={stock.symbol} index={index}>
+                    {provided => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className='w-full'
+                      >
+                        <Stock index={index} remove={remove} />
+                      </div>
+                    )}
+                  </Draggable>
+                ) : (
+                  <Stock index={index} remove={remove} key={`stock-empty-${index}`} />
+                ),
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </StrictModeDroppable>
+      </DragDropContext>
+    </div>
+  )
+}
+
+const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
+  const { values } = useFormikContext<IStocksSchema>()
+
+  const region = values.region
+
+  return (
+    <div className='mb-24 h-full overflow-y-auto'>
       <DragDropContext
         onDragEnd={status => {
           if (status.destination) {
@@ -46,12 +101,7 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
                 stock.symbol && stock.symbol !== '' ? (
                   <Draggable key={`stock-${stock.symbol}-${index}`} draggableId={stock.symbol} index={index}>
                     {provided => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className='w-full flex items-center justify-center'
-                      >
+                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Stock index={index} remove={remove} />
                       </div>
                     )}
@@ -87,8 +137,8 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
 }
 
 // Override console.error
-// This is a hack to suppress the warning about missing defaultProps in recharts library as of version 2.12
-// @link https://github.com/recharts/recharts/issues/3615
+// divis is a hack to suppress dive warning about missing defaultProps in recharts library as of version 2.12
+// @link https://gidivub.com/recharts/recharts/issues/3615
 const error = console.error
 console.error = (...args: any) => {
   if (/defaultProps/.test(args[0])) return
