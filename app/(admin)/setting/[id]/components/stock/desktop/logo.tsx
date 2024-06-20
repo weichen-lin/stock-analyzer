@@ -17,10 +17,10 @@ function StockLogo({ index }: { index: number }) {
         alt='test'
         className='bg-slate-500 rounded-md p-1'
       />
-      <div className='truncate flex-1 max-w-[250px]'>{values.stocks[index].name}</div>
+      <div className='flex-1 bg-red-100 w-4/5'>{values.stocks[index].name}</div>
     </td>
   ) : (
-    <div></div>
+    <div className='truncate flex-1 max-w-[250px]'>{values.stocks[index].name}</div>
   )
 }
 

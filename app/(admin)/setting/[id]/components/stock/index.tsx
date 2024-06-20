@@ -16,8 +16,12 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { updateStore } from '@/store/stock'
 import { useDevice } from '@/hooks/util'
-import Image from 'next/image'
+import { WholeNumberInput, CurrencyInput } from '@/components/input'
 import { Input } from '@/components/ui/input'
+import currency from 'currency.js'
+import { NumberInput } from '@/components/input'
+import { SearchSelect } from '@/components/select'
+import { DesktopStock } from './desktop'
 
 function MobileStock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
@@ -79,28 +83,6 @@ function MobileStock({ index, remove }: { index: number; remove: (index: number)
         )}
       </AnimatePresence>
     </motion.div>
-  )
-}
-
-function DesktopStock({ index, remove }: { index: number; remove: (index: number) => void }) {
-  const { values } = useFormikContext<IStocksSchema>()
-  const stock = values.stocks[index]
-  const { startUpdate } = updateStore()
-
-  const region = values.region
-
-  return (
-    <div className='grid grid-cols-[100px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] py-2 w-full'>
-      <StockLogo index={index} />
-      <StockSelect index={index} />
-      <StockName index={index} />
-      {stock.symbol && (
-        <>
-          <StockCost index={index} />
-          <StockStatus index={index} />
-        </>
-      )}
-    </div>
   )
 }
 

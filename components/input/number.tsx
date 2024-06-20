@@ -30,14 +30,15 @@ export default function NumberInput(props: {
     <Input
       value={value}
       onBlur={onBlur}
-      onFocus={(e) => {
+      onFocus={e => {
         e.target.select()
       }}
-      onContextMenu={(e) => e.preventDefault()}
-      onChange={(e) => {
+      onContextMenu={e => e.preventDefault()}
+      onChange={e => {
         setValue(e.target.value)
       }}
       disabled={disabled}
+      className='w-[100px]'
     />
   )
 }

@@ -14,7 +14,7 @@ function StockSelect({ index }: { index: number }) {
   const { isMiddleScreen } = useDevice()
 
   return (
-    <div className='w-2/3 md:w-full space-y-2'>
+    <div className='space-y-2'>
       {!isMiddleScreen && <div className='pl-2 font-semibold'>股票代號</div>}
       <SearchSelect
         onSelect={async ({ symbol, name, key }) => {
