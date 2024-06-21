@@ -33,7 +33,8 @@ export default function Planner() {
         }
 
         setData(j.data)
-      } catch {
+      } catch (e) {
+        console.log(e)
         redirect('/lists')
       } finally {
         setLoading(false)

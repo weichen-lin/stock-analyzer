@@ -16,7 +16,6 @@ const getTWStockSchema = z.object({
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const d = req.nextUrl.searchParams.get('q')
-  console.log({ d })
   if (!d) {
     return NextResponse.json({ error: 'invalid query params data', data: null }, { status: 400 })
   }

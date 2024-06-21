@@ -59,7 +59,7 @@ export const queryTWStocks = async (query: string): Promise<IStock[]> => {
 
     return data.data.map((e: any) =>
       stockSchema.parse({
-        symbol: e.n,
+        symbol: e.c,
         name: e.n,
         key: e.key,
       }),
@@ -79,6 +79,15 @@ export const getUSStockProfile = async (symbol: string) => {
   }
 }
 
+const parseTWPrice = ({ z, a }: { z: string; a: string }): number => {
+  if (z !== '-') {
+    return currency(z).value
+  }
+
+  const price_list = a.split('_')[0]
+  return currency(price_list).value
+}
+
 export const getTWStockProfile = async (key: string): Promise<IStockProfile[]> => {
   try {
     const res = await fetch(`/api/twse/profile?q=${key}`, { method: 'GET' })
@@ -88,13 +97,14 @@ export const getTWStockProfile = async (key: string): Promise<IStockProfile[]> =
       return []
     }
 
-    return data.data.map((e: any) =>
-      profileSchema.parse({
+    return data.data.map((e: any) => {
+      const price = parseTWPrice({ z: e.z, a: e.a })
+      return profileSchema.parse({
         symbol: e.c,
-        price: currency(e.z, { symbol: 'NTD' }).value,
+        price,
         image: '',
-      }),
-    )
+      })
+    })
   } catch {
     return []
   }

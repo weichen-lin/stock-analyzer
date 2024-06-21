@@ -9,7 +9,8 @@ export default async function FormSetting({ params }: { params: { id: string } }
     z.string().uuid().parse(params.id)
 
     return <Planner />
-  } catch {
+  } catch (err) {
+    console.log(err)
     redirect('/lists')
   }
 }

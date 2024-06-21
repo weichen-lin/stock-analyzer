@@ -2,12 +2,12 @@
 
 import { Formik, FormikHelpers, FieldArray, ArrayHelpers } from 'formik'
 import { FC } from 'react'
-import Stocks, { DesktopStocks } from './stocks'
-import { Total } from './stock'
+import { Total, DesktopTotal } from './stock'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { StockPie } from './charts'
 import { Positions } from './analysis'
 import { IStocksSchema } from '@/app/api/setting/type'
+import DesktopStocks from './stock/desktop'
 
 const SettingForm: FC<IStocksSchema> = (props: IStocksSchema) => {
   return (
@@ -20,10 +20,14 @@ const SettingForm: FC<IStocksSchema> = (props: IStocksSchema) => {
           <TabsTrigger value='setting'>倉位設置</TabsTrigger>
           <TabsTrigger value='graph'>分析倉位</TabsTrigger>
         </TabsList>
-        <TabsContent value='setting' className='w-full h-full'>
-          <Total />
-          <FieldArray name='stocks'>{(helper: ArrayHelpers) => <DesktopStocks {...helper} />}</FieldArray>
-        </TabsContent>
+        <FieldArray name='stocks'>
+          {(helper: ArrayHelpers) => (
+            <TabsContent value='setting' className='w-full h-full'>
+              <DesktopTotal {...helper} />
+              <DesktopStocks {...helper} />
+            </TabsContent>
+          )}
+        </FieldArray>
         <TabsContent value='graph'>
           <div className='flex items-center p-4'>
             <StockPie />

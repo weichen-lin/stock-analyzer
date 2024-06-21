@@ -6,6 +6,7 @@ const twStocksInfo = z.object({
     z.object({
       c: z.string(),
       z: z.string(),
+      a: z.string(),
     }),
   ),
 })

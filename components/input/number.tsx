@@ -38,7 +38,6 @@ export default function NumberInput(props: {
         setValue(e.target.value)
       }}
       disabled={disabled}
-      className='w-[100px]'
     />
   )
 }

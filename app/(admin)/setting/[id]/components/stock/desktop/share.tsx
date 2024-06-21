@@ -1,8 +1,8 @@
+import { WholeNumberInput } from '@/components/input'
 import { useFormikContext } from 'formik'
 import { IStocksSchema } from '@/app/api/setting/type'
-import { CurrencyInput } from '@/components/input'
 
-export default function StockCost({ index }: { index: number }) {
+export default function StockShare({ index }: { index: number }) {
   const { values, setFieldValue } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
 
@@ -11,10 +11,10 @@ export default function StockCost({ index }: { index: number }) {
   return (
     <td className='px-4 py-2 flex items-center'>
       {isSelect ? (
-        <CurrencyInput
-          cashValue={stock.averageCost}
+        <WholeNumberInput
+          number={stock.shares}
           onChange={e => {
-            setFieldValue(`stocks[${index}].averageCost`, e)
+            setFieldValue(`stocks[${index}].shares`, e)
           }}
         />
       ) : (

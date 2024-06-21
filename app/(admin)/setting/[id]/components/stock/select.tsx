@@ -32,7 +32,6 @@ function StockSelect({ index }: { index: number }) {
           }
         }}
         disabled={isSelect}
-        current={stock.symbol}
         region={values.region}
       />
     </div>

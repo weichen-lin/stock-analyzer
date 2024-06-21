@@ -47,7 +47,7 @@ export default async function Lists() {
     })
 
     return (
-      <div className='flex-1 md:pt-6 pt-18 h-full flex items-start justify-start flex-col gap-y-6 w-full'>
+      <div className='flex-1 pt-24 h-full flex items-start justify-start flex-col gap-y-6 w-full'>
         <AddSetting totals={totals} />
         <div className='px-4 flex flex-col gap-y-4 pb-8 w-full'>
           <div className='flex flex-col gap-4 md:grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>

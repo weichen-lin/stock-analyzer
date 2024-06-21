@@ -2,9 +2,7 @@ import StockSelect from './select'
 import StockInfo from './info'
 import StockCost from './cost'
 import StockStatus from './status'
-import StockLogo from './logo'
-import StockName from './name'
-import Total from './total'
+import Total, { DesktopTotal } from './total'
 import { useFormikContext } from 'formik'
 import { IStocksSchema } from '@/app/api/setting/type'
 import { Button } from '@/components/ui/button'
@@ -21,7 +19,6 @@ import { Input } from '@/components/ui/input'
 import currency from 'currency.js'
 import { NumberInput } from '@/components/input'
 import { SearchSelect } from '@/components/select'
-import { DesktopStock } from './desktop'
 
 function MobileStock({ index, remove }: { index: number; remove: (index: number) => void }) {
   const [open, setOpen] = useState(true)
@@ -88,8 +85,8 @@ function MobileStock({ index, remove }: { index: number; remove: (index: number)
 
 const Stock = (props: { index: number; remove: (index: number) => void }) => {
   const { isMiddleScreen } = useDevice()
-  return isMiddleScreen ? <DesktopStock {...props} /> : <MobileStock {...props} />
+  return <MobileStock {...props} />
 }
 
-export { StockSelect, StockInfo, StockCost, StockStatus, Total }
+export { StockSelect, StockInfo, StockCost, StockStatus, Total, DesktopTotal }
 export { Stock }

@@ -7,7 +7,8 @@ export const stockSchema = z.object({
   shares: z.string(),
   symbol: z.string(),
   targetPosition: z.string(),
-  averageCost: z.string()
+  averageCost: z.string(),
+  key: z.string(),
 })
 
 export const stocksSchema = z.object({
@@ -16,7 +17,7 @@ export const stocksSchema = z.object({
   region: z.string().min(2).max(255),
   total: z.string(),
   update_at: z.string(),
-  stocks: z.array(stockSchema)
+  stocks: z.array(stockSchema),
 })
 
 export type IStocksSchema = z.infer<typeof stocksSchema>

@@ -27,32 +27,6 @@ const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   return <Droppable {...props}>{children}</Droppable>
 }
 
-export const DesktopStocks = ({ swap, push, remove }: ArrayHelpers) => {
-  const { values } = useFormikContext<IStocksSchema>()
-
-  return (
-    <table className='w-full'>
-      <thead>
-        <tr className='grid grid-cols-[0.75fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr] border border-slate-200 divide-x-[1px] bg-slate-300/30'>
-          <th className='text-left px-4 py-1'>代號</th>
-          <th className='text-left px-4 py-1'>名稱</th>
-          <th className='text-left px-4 py-1'>持有股數</th>
-          <th className='text-left px-4 py-1'>平均成本</th>
-          <th className='text-left px-4 py-1'>市值</th>
-          <th className='text-left px-4 py-1'>漲跌幅</th>
-          <th className='text-left px-4 py-1'>當前倉位 (%)</th>
-          <th className='text-left px-4 py-1'>目標倉位 (%)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {values.stocks.map((stock, index) => (
-          <Stock index={index} remove={remove} />
-        ))}
-      </tbody>
-    </table>
-  )
-}
-
 const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
   const { values } = useFormikContext<IStocksSchema>()
 

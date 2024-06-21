@@ -1,111 +1,55 @@
 import StockSelect from './select'
-import StockInfo from './info'
-import StockCost from './cost'
-import StockStatus from './status'
-import StockLogo from './logo'
 import StockName from './name'
-import Total from './total'
-import { useFormikContext } from 'formik'
+import StockShare from './share'
+import StockCost from './cost'
+import StockPrice from './price'
+import PercentageChange from './percent'
+import { CurrentPorsition, TargetPosition } from './positions'
+import Operator from './operator'
+import { ArrayHelpers, useFormikContext } from 'formik'
 import { IStocksSchema } from '@/app/api/setting/type'
-import { Button } from '@/components/ui/button'
-import clsx from 'clsx'
-import { ChevronDownIcon } from 'lucide-react'
-import { Trash } from '@phosphor-icons/react'
-import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { updateStore } from '@/store/stock'
-import { useDevice } from '@/hooks/util'
-import { WholeNumberInput, CurrencyInput } from '@/components/input'
-import { Input } from '@/components/ui/input'
-import currency from 'currency.js'
-import { NumberInput } from '@/components/input'
-import { SearchSelect } from '@/components/select'
 
-function DesktopStock({ index, remove }: { index: number; remove: (index: number) => void }) {
-  const { values, setFieldValue } = useFormikContext<IStocksSchema>()
-  const stock = values.stocks[index]
-
-  const getAverageCost = () => {
-    return currency(stock.averageCost, { precision: 2 }).value
-  }
-
-  const average = getAverageCost()
-
+function Stock({ index, remove }: { index: number; remove: (index: number) => void }) {
   return (
-    <tr className='grid grid-cols-[0.75fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr] border-[1px] border-t-0 border-slate-200 divide-x-[1px]'>
-      <td className='py-2 px-3 w-full'>
-        <StockSelect index={index} />
-      </td>
-      <StockLogo index={index} />
-      <td className='px-4 py-2'>
-        <WholeNumberInput
-          number={stock.shares}
-          onChange={e => {
-            setFieldValue(`stocks[${index}].shares`, e)
-          }}
-        />
-      </td>
-      <td className='px-4 py-2'>
-        <CurrencyInput
-          cashValue={stock.averageCost}
-          onChange={e => {
-            setFieldValue(`stocks[${index}].averageCost`, e)
-          }}
-        />
-      </td>
-      <td className='px-4 py-2 flex items-center'>{stock.price}</td>
-      <td className='px-4 py-2 flex items-center'>
-        {average > 0 ? (
-          <div className='px-2'>
-            <PercentageChange averageCost={average} price={stock.price} />
-          </div>
-        ) : (
-          <div className='px-2'>--</div>
-        )}
-      </td>
-      <td className='px-4 py-2 flex items-center'>
-        <NumberInput
-          number={stock.targetPosition}
-          onChange={e => {
-            setFieldValue(`stocks[${index}].targetPosition`, e)
-          }}
-          max={100}
-        />
-      </td>
-      <td className='px-4 py-2 flex items-center'>
-        <NumberInput
-          number={stock.targetPosition}
-          onChange={e => {
-            setFieldValue(`stocks[${index}].targetPosition`, e)
-          }}
-          max={100}
-        />
-      </td>
+    <tr className='grid grid-cols-[0.75fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr_0.5fr] border-[1px] border-t-0 border-slate-200 divide-x-[1px]'>
+      <StockSelect index={index} />
+      <StockName index={index} />
+      <StockShare index={index} />
+      <StockCost index={index} />
+      <StockPrice index={index} />
+      <PercentageChange index={index} />
+      <CurrentPorsition index={index} />
+      <TargetPosition index={index} />
+      <Operator index={index} remove={remove} />
     </tr>
   )
 }
 
-const PercentageChange = ({ averageCost, price }: { averageCost: number; price: number }) => {
-  if (averageCost === 0) {
-    return <div className='px-3 py-2'>--</div>
-  }
+export const DesktopStocks = ({ swap, push, remove }: ArrayHelpers) => {
+  const { values } = useFormikContext<IStocksSchema>()
 
-  const cost = currency(averageCost, { precision: 4 })
-
-  const percent = currency(price, { precision: 4 }).subtract(cost).divide(cost).multiply(100)
-
-  if (percent.value > 0) {
-    return <div className='px-3 py-2 text-green-500 font-semibold'>{percent.value}%</div>
-  }
-
-  if (percent.value < 0) {
-    return <div className='px-3 py-2 text-red-500 font-semibold'>{percent.value}%</div>
-  }
-
-  return <div className='px-3 py-2 font-semibold'>{percent.value}%</div>
+  return (
+    <table className='w-full'>
+      <thead>
+        <tr className='grid grid-cols-[0.75fr_2fr_1fr_1fr_1fr_1fr_1fr_1fr_0.5fr] border border-slate-200 divide-x-[1px] bg-slate-300/30'>
+          <th className='text-left px-4 py-1'>代號</th>
+          <th className='text-left px-4 py-1'>名稱</th>
+          <th className='text-left px-4 py-1'>持有股數</th>
+          <th className='text-left px-4 py-1'>平均成本</th>
+          <th className='text-left px-4 py-1'>市值</th>
+          <th className='text-left px-4 py-1'>漲跌幅</th>
+          <th className='text-left px-4 py-1'>當前倉位 (%)</th>
+          <th className='text-left px-4 py-1'>目標倉位 (%)</th>
+          <th className='text-left px-4 py-1'></th>
+        </tr>
+      </thead>
+      <tbody>
+        {values.stocks.map((stock, index) => (
+          <Stock index={index} remove={remove} key={`desktop-stock-${stock.symbol}-${index}`} />
+        ))}
+      </tbody>
+    </table>
+  )
 }
 
-export { StockSelect, StockInfo, StockCost, StockStatus, Total }
-
-export { DesktopStock }
+export default DesktopStocks

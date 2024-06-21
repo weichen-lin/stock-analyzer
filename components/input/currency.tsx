@@ -42,7 +42,7 @@ export default function CurrencyInput(props: {
       }}
       placeholder={placeholder}
       onContextMenu={e => e.preventDefault()}
-      className={cn(error ? 'border-red-300' : '', 'select-none w-[120px]')}
+      className={cn(error ? 'border-red-300' : '', 'select-none')}
     />
   )
 }
