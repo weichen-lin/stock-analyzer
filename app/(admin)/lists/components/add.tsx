@@ -23,7 +23,9 @@ export default function AddSetting({ totals }: { totals: number }) {
   const [isCreate, setIsCreate] = useState(false)
   const [error, setError] = useState('')
 
-  const t = currency(totals, { symbol: 'NTD', decimal: '.', separator: ',' }).format()
+  const t = currency(totals, { symbol: '', decimal: '.', separator: ',' }).format()
+
+  const [whole, unit] = t.split('.')
 
   const clean = () => {
     setName('')
@@ -48,12 +50,17 @@ export default function AddSetting({ totals }: { totals: number }) {
   }
 
   return (
-    <div className='flex justify-between md:justify-start px-4 w-full md:w-[450px] gap-x-6 pt-[72px] md:pt-0'>
-      <p className='text-sm text-slate-500 flex gap-x-2 items-center'>
+    <div className='flex justify-between md:justify-start px-8 w-full md:w-[450px] gap-x-6 pt-[72px] md:pt-0'>
+      <div className='text-sm text-slate-500 flex gap-x-2 items-center'>
         <Coin className='w-4 h-4' />
         <span>目前總資產</span>
-        <span className='text-lg'>{t}</span>
-      </p>
+        <div className='flex items-baseline ml-4'>
+          <div className='text-slate-500 mr-3'>NTD</div>
+          <div className='text-slate-900 font-semibold text-xl'>{whole}</div>
+          <div className='text-slate-500'>.</div>
+          <div className='text-slate-500'>{unit}</div>
+        </div>
+      </div>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant='outline' size='icon' className='md:px-12'>

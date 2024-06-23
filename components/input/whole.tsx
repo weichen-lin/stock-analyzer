@@ -1,13 +1,10 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import currency from 'currency.js'
 
-export default function WholeNumberInput(props: {
-  number: string
-  onChange: (e: string) => void
-}) {
+export default function WholeNumberInput(props: { number: string; onChange: (e: string) => void }) {
   const { number, onChange } = props
   const [value, setValue] = useState(number)
 
@@ -22,11 +19,11 @@ export default function WholeNumberInput(props: {
     <Input
       value={value}
       onBlur={onBlur}
-      onFocus={(e) => {
+      onFocus={e => {
         e.target.select()
       }}
-      onContextMenu={(e) => e.preventDefault()}
-      onChange={(e) => {
+      onContextMenu={e => e.preventDefault()}
+      onChange={e => {
         setValue(e.target.value)
       }}
     />

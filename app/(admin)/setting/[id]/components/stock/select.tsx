@@ -5,15 +5,17 @@ import { useFormikContext } from 'formik'
 import { getUSStockProfile, getTWStockProfile } from '@/finance/query'
 import { IStocksSchema } from '@/app/api/setting/type'
 import currency from 'currency.js'
+import { useDevice } from '@/hooks/util'
 
 function StockSelect({ index }: { index: number }) {
   const { values, setFieldValue } = useFormikContext<IStocksSchema>()
   const stock = values.stocks[index]
   const isSelect = stock.symbol !== ''
+  const { isMiddleScreen } = useDevice()
 
   return (
-    <div className='w-2/3 md:w-full space-y-2'>
-      <div className='pl-2 font-semibold'>股票代號</div>
+    <div className='space-y-2'>
+      {!isMiddleScreen && <div className='pl-2 font-semibold'>股票代號</div>}
       <SearchSelect
         onSelect={async ({ symbol, name, key }) => {
           setFieldValue(`stocks[${index}].symbol`, symbol)
@@ -30,7 +32,6 @@ function StockSelect({ index }: { index: number }) {
           }
         }}
         disabled={isSelect}
-        current={stock.symbol}
         region={values.region}
       />
     </div>

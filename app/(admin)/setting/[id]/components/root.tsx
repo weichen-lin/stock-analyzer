@@ -2,12 +2,12 @@
 
 import { Formik, FormikHelpers, FieldArray, ArrayHelpers } from 'formik'
 import { FC } from 'react'
-import Stocks from './stocks'
-import { Total } from './stock'
+import { Total, DesktopTotal } from './stock'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { StockPie } from './charts'
 import { Positions } from './analysis'
 import { IStocksSchema } from '@/app/api/setting/type'
+import DesktopStocks from './stock/desktop'
 
 const SettingForm: FC<IStocksSchema> = (props: IStocksSchema) => {
   return (
@@ -15,24 +15,26 @@ const SettingForm: FC<IStocksSchema> = (props: IStocksSchema) => {
       initialValues={props}
       onSubmit={(values: IStocksSchema, { setSubmitting }: FormikHelpers<IStocksSchema>) => {}}
     >
-      <div className='px-2 w-full max-w-[1280px] mx-auto'>
-        <Tabs defaultValue='setting' className='w-full'>
-          <TabsList className='grid w-full grid-cols-2'>
-            <TabsTrigger value='setting'>倉位設置</TabsTrigger>
-            <TabsTrigger value='graph'>分析倉位</TabsTrigger>
-          </TabsList>
-          <TabsContent value='setting'>
-            <Total />
-            <FieldArray name='stocks'>{(helper: ArrayHelpers) => <Stocks {...helper} />}</FieldArray>
-          </TabsContent>
-          <TabsContent value='graph'>
-            <div className='flex items-center p-4'>
-              <StockPie />
-            </div>
-            <Positions />
-          </TabsContent>
-        </Tabs>
-      </div>
+      <Tabs defaultValue='setting' className='h-full px-7'>
+        <TabsList className='grid w-full grid-cols-2 md:max-w-[480px]'>
+          <TabsTrigger value='setting'>倉位設置</TabsTrigger>
+          <TabsTrigger value='graph'>分析倉位</TabsTrigger>
+        </TabsList>
+        <FieldArray name='stocks'>
+          {(helper: ArrayHelpers) => (
+            <TabsContent value='setting' className='w-full h-full'>
+              <DesktopTotal {...helper} />
+              <DesktopStocks {...helper} />
+            </TabsContent>
+          )}
+        </FieldArray>
+        <TabsContent value='graph'>
+          <div className='flex items-center p-4'>
+            <StockPie />
+          </div>
+          <Positions />
+        </TabsContent>
+      </Tabs>
     </Formik>
   )
 }

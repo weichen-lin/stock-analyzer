@@ -30,8 +30,10 @@ const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
 const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
   const { values } = useFormikContext<IStocksSchema>()
 
+  const region = values.region
+
   return (
-    <div className='mb-24'>
+    <div className='mb-24 h-full overflow-y-auto'>
       <DragDropContext
         onDragEnd={status => {
           if (status.destination) {
@@ -46,12 +48,7 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
                 stock.symbol && stock.symbol !== '' ? (
                   <Draggable key={`stock-${stock.symbol}-${index}`} draggableId={stock.symbol} index={index}>
                     {provided => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className='w-full flex items-center justify-center'
-                      >
+                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Stock index={index} remove={remove} />
                       </div>
                     )}
@@ -87,8 +84,8 @@ const Stocks = ({ swap, push, remove }: ArrayHelpers) => {
 }
 
 // Override console.error
-// This is a hack to suppress the warning about missing defaultProps in recharts library as of version 2.12
-// @link https://github.com/recharts/recharts/issues/3615
+// divis is a hack to suppress dive warning about missing defaultProps in recharts library as of version 2.12
+// @link https://gidivub.com/recharts/recharts/issues/3615
 const error = console.error
 console.error = (...args: any) => {
   if (/defaultProps/.test(args[0])) return

@@ -4,11 +4,11 @@ import Navbar from '@/components/navbar'
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='w-full h-screen flex flex-1'>
+    <div className='w-full h-screen flex'>
       <Sidebar />
-      <div className='w-full flex flex-col overflow-y-auto'>
+      <div className='relative w-full h-full flex flex-col'>
         <Navbar />
-        {children}
+        <div className='flex-1 overflow-y-scroll'>{children}</div>
       </div>
     </div>
   )

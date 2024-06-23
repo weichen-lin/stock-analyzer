@@ -13,11 +13,10 @@ interface SearchSelectProps {
   defaultOptions?: IStock[]
   onSelect: (e: IStock) => void
   disabled?: boolean
-  current?: string
 }
 
 const SearchSelect = (props: SearchSelectProps) => {
-  const { defaultOptions = [], onSelect, disabled, current, region } = props
+  const { defaultOptions = [], onSelect, disabled, region } = props
   const [options, setOptions] = useState<IStock[]>(defaultOptions)
   const [isSearching, setIsSearching] = useState(true)
   const [focused, setFocused] = useState(false)
@@ -32,7 +31,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       const fetchData = async () => {
         const data =
           region === 'us' ? await queryUSStocks(debouncedSearchTerm) : await queryTWStocks(debouncedSearchTerm)
-
+        console.log({ stockData: data })
         setOptions(data)
         setIsSearching(false)
       }
@@ -61,7 +60,7 @@ const SearchSelect = (props: SearchSelectProps) => {
     <div className='w-full relative' ref={ref}>
       <Input
         placeholder='Search...'
-        value={current && disabled ? current : value}
+        value={value}
         onChange={e => {
           setValue(e.target.value)
         }}
@@ -72,7 +71,7 @@ const SearchSelect = (props: SearchSelectProps) => {
       />
       {focused && (
         <motion.div
-          className='origin-top absolute z-10 w-full bg-white shadow-lg rounded-md py-1 mt-1 top-[110%] space-y-2 px-2 max-h-[150px] overflow-y-scroll'
+          className='origin-top absolute z-10 w-full md:w-[500px] bg-white shadow-lg rounded-md py-1 mt-1 top-[110%] space-y-2 px-2 max-h-[150px] overflow-y-scroll'
           initial={{ scaleY: 0 }}
           animate={{ scaleY: 1 }}
           exit={{ scaleY: 0 }}
@@ -83,10 +82,12 @@ const SearchSelect = (props: SearchSelectProps) => {
             options.map((option, index) => (
               <div
                 key={index}
-                className='px-2 py-1 font-semibold bg-slate-100 rounded-md'
+                className='px-2 py-1 font-semibold bg-slate-100 rounded-md hover:bg-slate-300 cursor-pointer w-full flex items-center justify-start'
                 onClick={() => handleSelect(option.symbol)}
               >
-                {option.symbol}
+                <div className='text-sm text-slate-500 md:w-[70px] truncate'>{option.symbol}</div>
+                <div className='px-1 text-sm text-slate-500'>-</div>
+                <div className='px-1 md:w-[300px] truncate'>{option.name}</div>
               </div>
             ))}
           {isSearching && (

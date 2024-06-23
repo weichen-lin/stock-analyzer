@@ -15,7 +15,7 @@ function StockCost({ index }: { index: number }) {
         <div className='pl-2 font-semibold'>投入股數</div>
         <WholeNumberInput
           number={stock.shares}
-          onChange={(e) => {
+          onChange={e => {
             setFieldValue(`stocks[${index}].shares`, e)
           }}
         />
@@ -24,7 +24,7 @@ function StockCost({ index }: { index: number }) {
         <div className='pl-2 font-semibold'>平均成本</div>
         <CurrencyInput
           cashValue={stock.averageCost}
-          onChange={(e) => {
+          onChange={e => {
             setFieldValue(`stocks[${index}].averageCost`, e)
           }}
         />

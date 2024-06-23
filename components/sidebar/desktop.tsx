@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 
 const Bars = [
-  { name: 'Disk', icon: <DiscIcon />, path: 'd' },
+  { name: '資產', icon: <DiscIcon />, path: 'setting' },
   { name: 'Setting', icon: <GearIcon />, path: 'settings' },
 ]
 

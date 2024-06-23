@@ -19,7 +19,7 @@ export default function CurrencyInput(props: {
     const e = currency(value).format({
       precision: 2,
       separator: ',',
-      symbol: ''
+      symbol: '',
     })
     setValue(e)
     onChange(e)
@@ -34,14 +34,14 @@ export default function CurrencyInput(props: {
       ref={ref}
       value={value}
       onBlur={onBlur}
-      onChange={(e) => {
+      onChange={e => {
         setValue(e.target.value)
       }}
-      onFocus={(e) => {
+      onFocus={e => {
         e.target.select()
       }}
       placeholder={placeholder}
-      onContextMenu={(e) => e.preventDefault()}
+      onContextMenu={e => e.preventDefault()}
       className={cn(error ? 'border-red-300' : '', 'select-none')}
     />
   )

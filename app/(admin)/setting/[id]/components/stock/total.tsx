@@ -1,4 +1,4 @@
-import { useFormikContext, useField } from 'formik'
+import { ArrayHelpers, useFormikContext } from 'formik'
 import currency from 'currency.js'
 import Image from 'next/image'
 import { useEffect, useState, useCallback } from 'react'
@@ -40,11 +40,10 @@ const regionMapper: { [key: string]: string } = {
 export default function Total() {
   const { values } = useFormikContext<IStocksSchema>()
   const [isUpdate, setIsUpdate] = useState(false)
-  const { startUpdate, updateStocks } = useUpdate()
   const { id } = useParams()
 
   const stocksValue = values.stocks
-    .map((e) => {
+    .map(e => {
       if (currency(e.shares).value === 0) return 0
       return currency(e.shares).multiply(e.price).value
     })
@@ -65,7 +64,7 @@ export default function Total() {
 
       setIsUpdate(false)
     }, 750),
-    []
+    [],
   )
 
   useEffect(() => {
@@ -74,7 +73,7 @@ export default function Total() {
   }, [values.stocks])
 
   return (
-    <div className='w-full flex flex-col justify-between gap-y-3 p-2 mt-4'>
+    <div className='w-full md:max-w-[480px] flex flex-col justify-between gap-y-3 p-2 mt-4'>
       <div className='flex w-full justify-start items-center gap-x-4'>
         <div className='pl-1 font-semibold'>目前資產總價值</div>
         {isUpdate && (
@@ -88,9 +87,83 @@ export default function Total() {
           <Currency value={stocksValue.toString()} />
           <div className='text-slate-500 text-sm'>{regionMapper[values.region]}</div>
         </div>
-        <Button onClick={async () => await updateStocks()} loading={startUpdate} disabled={startUpdate}>
-          更新
-        </Button>
+      </div>
+    </div>
+  )
+}
+
+export const DesktopTotal = ({ unshift }: ArrayHelpers) => {
+  const { values } = useFormikContext<IStocksSchema>()
+  const [isUpdate, setIsUpdate] = useState(false)
+  const { id } = useParams()
+
+  const stocksValue = values.stocks
+    .map(e => {
+      if (currency(e.shares).value === 0) return 0
+      return currency(e.shares).multiply(e.price).value
+    })
+    .reduce((a, b) => a + b, 0)
+
+  const debouncedUpdate = useCallback(
+    debounce(async (stocks: IStocksSchema['stocks'], total: string) => {
+      setIsUpdate(true)
+
+      await fetch(`/api/setting`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          id,
+          total: total,
+          stocks: stocks,
+        }),
+      })
+
+      setIsUpdate(false)
+    }, 750),
+    [],
+  )
+
+  useEffect(() => {
+    const t = currency(stocksValue).format({ symbol: '', precision: 2 })
+    debouncedUpdate(values.stocks, t)
+  }, [values.stocks])
+
+  return (
+    <div className='w-full md:max-w-[480px] flex flex-col justify-between gap-y-3 p-2 mt-4'>
+      <div className='flex w-full justify-start items-center gap-x-4'>
+        <div className='font-semibold'>目前資產總價值</div>
+        {isUpdate && (
+          <div className=''>
+            <Image src='/loader.gif' width={20} height={20} alt='load' unoptimized />
+          </div>
+        )}
+      </div>
+      <div className='flex gap-x-8 w-full justify-between'>
+        <div className='py-2 flex gap-x-3 items-baseline'>
+          <div className='text-slate-500 text-sm'>{regionMapper[values.region]}</div>
+          <Currency value={stocksValue.toString()} />
+        </div>
+        <div className='flex gap-x-4 items-center'>
+          <Button variant='outline' className='bg-slate-700 text-slate-300'>
+            更新
+          </Button>
+          <Button
+            variant='outline'
+            onClick={() => {
+              unshift({
+                symbol: '',
+                name: '',
+                targetPosition: '0.00',
+                image: '',
+                price: 0,
+                shares: '0',
+                averageCost: '0.00',
+                key: '',
+              })
+            }}
+          >
+            新增
+          </Button>
+        </div>
       </div>
     </div>
   )
